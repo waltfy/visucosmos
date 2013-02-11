@@ -1,0 +1,6 @@
+<? $pagetitle = 'Dashboard'; ?>
+
+<?php \Laravel\Section::start('content'); ?>
+	<h2>Logged in!</h2>
+<?php \Laravel\Section::stop(); ?>
+<?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

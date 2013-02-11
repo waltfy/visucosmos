@@ -1,0 +1,29 @@
+<? $pagetitle = 'Create New'; ?>
+
+<?php \Laravel\Section::start('content'); ?>
+	<?php if(isset($errors) && count($errors->all()) > 0): ?>
+		<div class='alert alert-error'>
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<ul>
+				<?php foreach($errors->all('<li>:message</li>') as $message): ?>
+				<?php echo  $message ; ?>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	<?php endif; ?>
+	<h2>New Visualisation</h2>
+	<small>Create a new visualisation from the Cosmos API.</small>
+	<?php echo  Form::open('visualisation/new', '', array('class' => 'form-horizontal')) ; ?>
+	<p>
+	<?php echo  Form::label('name', "Name your visualisation.") ; ?>
+	<?php echo  Form::text('name', '', array('placeholder' => 'Visualisation Name')) ; ?>
+	</p>
+	<p>
+	<?php echo  Form::label('data-set', "Select a Data Set below.") ; ?>
+	<?php echo  Form::select('data-set', $data_sets, Input::old('id')) ; ?>
+	</p>
+	<?php echo  Form::button('Create', array('class' => 'btn btn-success' )) ; ?>
+	
+	<?php echo  Form::close() ; ?>
+<?php \Laravel\Section::stop(); ?>
+<?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

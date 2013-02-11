@@ -1,0 +1,4 @@
+AuthName "visucosmos.info statistics"
+AuthType Basic
+AuthUserFile /home/group11/.awstats-htpasswd
+require valid-user

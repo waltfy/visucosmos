@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<?php echo view('components.header')->with(get_defined_vars())->render(); ?>
+	<body>
+		<?php echo view('components.nav')->with(get_defined_vars())->render(); ?>
+			<div class='container'>
+				<div class='app_container'>
+					<div class="hero-unit app_content">
+						<div class="container-fluid">
+							<div class="row-fluid">
+								<div class="span2">
+									
+								</div>
+								<div class="span10">
+									<?php echo \Laravel\Section::yield('content'); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<?php echo view('components.footer')->with(get_defined_vars())->render(); ?>
+	</body>
+</html>
