@@ -303,8 +303,12 @@ Route::post('visualisation/new', function(){
 		$visualisation->user_id = Auth::user()->id;
 		$visualisation->save();
 
-		return Redirect::to('visualisation/edit/'.$visualisation->id);
+		return Redirect::to('visualisation/edit/'.$visualisation->id)->with('data_set', Input::get('data-set'));
 	}
+
+});
+
+Route::post('data/generate', function(){
 
 });
 

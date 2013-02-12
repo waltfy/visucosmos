@@ -21,7 +21,7 @@
 	</p>
 	<p>
 	{{ Form::label('data-set', "Select a Data Set below.") }}
-	{{ Form::select('data-set', $data_sets, Input::old('id')) }}
+	{{ Form::select('data-set', $select, Input::old('id')) }}
 	</p>
 	{{ Form::button('Create', array('class' => 'btn btn-success' )) }}
 	

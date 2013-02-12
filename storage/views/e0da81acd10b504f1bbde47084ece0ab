@@ -1,0 +1,13 @@
+<? $pagetitle = 'Settings'; ?>
+
+<?php \Laravel\Section::start('content'); ?>
+	<h2>Administrator Settings</h2>
+	<small>Perform tasks that affect the system directly.</small>
+	<br>
+	<?php echo  HTML::link('admin/newuser', 'Add User'); ; ?>
+	<br>
+	<?php echo  HTML::link('admin/privileges', 'Add Admin Privileges'); ; ?>
+	<br>
+	<?php echo  HTML::link('admin/upload', 'New Data Set'); ; ?>
+<?php \Laravel\Section::stop(); ?>
+<?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

@@ -12,12 +12,12 @@
 			</ul>
 		</div>
 	@endif
-	<h2>{{ $details->name }}</h2>
+	<h2>{{ $details->name }}<small> @ {{ $dataset->name }}</small></h2>
 	<small>Edit details such as attributes and columns.</small>
-	{{ Form::open('visualisation/new', '', array('class' => 'form-horizontal')) }}
+	{{ Form::open('data/generate', '', array('class' => 'form-horizontal')) }}
 	<p>
 	{{ Form::label('cols', "Pick your columns.") }}
-	{{ Form::text('cols', '', array('placeholder' => 'Visualisation Name')) }}
+	{{ Form::select('attributes', $select, null, array('multiple' => 'multiple')) }}
 	</p>
 	<p>
 
