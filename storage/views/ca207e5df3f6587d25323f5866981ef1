@@ -15,8 +15,8 @@
 	<small>Edit details such as attributes and columns.</small>
 	<?php echo  Form::open('data/generate', '', array('class' => 'form-horizontal')) ; ?>
 	<p>
-	<?php echo  Form::label('cols', "Pick your columns.") ; ?>
-	<?php echo  Form::select('attributes', $select, null, array('multiple' => 'multiple')) ; ?>
+	<?php echo  Form::label('attributes', "Pick your attributes.") ; ?>
+	<?php echo  $attr->attr2 ; ?>
 	</p>
 	<p>
 

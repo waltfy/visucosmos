@@ -309,7 +309,7 @@ Route::post('visualisation/new', function(){
 });
 
 Route::post('data/generate', function(){
-
+	
 });
 
 Route::controller(Controller::detect());

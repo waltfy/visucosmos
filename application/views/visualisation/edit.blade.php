@@ -16,8 +16,8 @@
 	<small>Edit details such as attributes and columns.</small>
 	{{ Form::open('data/generate', '', array('class' => 'form-horizontal')) }}
 	<p>
-	{{ Form::label('cols', "Pick your columns.") }}
-	{{ Form::select('attributes', $select, null, array('multiple' => 'multiple')) }}
+	{{ Form::label('attributes', "Pick your attributes.") }}
+	{{ $attr->attr2 }}
 	</p>
 	<p>
 
