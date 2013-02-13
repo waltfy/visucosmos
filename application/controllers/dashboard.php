@@ -8,7 +8,7 @@
 		}
 
 		function action_index() {
-			$recent = User::find(Auth::user()->id)->visualisation()->order_by('created_at', 'desc')->take(5)->get();
+			$recent = User::find(Auth::user()->id)->visualisation()->where('is_active', '=', 'Y')->order_by('created_at', 'desc')->take(5)->get();
 			return View::make('dashboard.index')->with('recent', $recent);
 		}
 

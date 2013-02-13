@@ -309,7 +309,15 @@ Route::post('visualisation/new', function(){
 });
 
 Route::post('data/generate', function(){
-	
+
+	// $data = Input::all();
+
+	// $headers = $data->headers; // (attr1, attr3, attr8);
+	// $values = DB::();
+
+	// return Redirect::to('visualisation/edit/'.$visualisation->id)->with('graphs', )
+
+
 });
 
 Route::controller(Controller::detect());

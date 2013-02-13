@@ -22,6 +22,7 @@
 
 	</p>
 	<?php echo  HTML::link('visualisation/delete/'.$details->id, 'Delete', array('class' => 'btn btn-danger')) ; ?>
+	<?php echo  Form::hidden('vis_id', $details->id) ; ?>
 	<?php echo  Form::button('Generate Previews', array('class' => 'btn btn-success' )) ; ?>
 	
 	<?php echo  Form::close() ; ?>

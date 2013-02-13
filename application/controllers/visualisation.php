@@ -29,9 +29,9 @@
 		function action_delete($id) {
 			$details = Visualisation::find($id);
 			$name = $details->name;
-			$details->delete();
+			$details->is_active = 'N';
+			$details->save();
 			return Redirect::to('dashboard')->with('deleted', true);
-			// return View::make('dashboard.index');
 		}
 
 	}

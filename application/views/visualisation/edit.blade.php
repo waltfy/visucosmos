@@ -23,6 +23,7 @@
 
 	</p>
 	{{ HTML::link('visualisation/delete/'.$details->id, 'Delete', array('class' => 'btn btn-danger')) }}
+	{{ Form::hidden('vis_id', $details->id) }}
 	{{ Form::button('Generate Previews', array('class' => 'btn btn-success' )) }}
 	
 	{{ Form::close() }}
