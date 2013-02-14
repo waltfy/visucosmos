@@ -1,0 +1,53 @@
+<? $pagetitle = 'Add Privilege'; ?>
+
+<?php \Laravel\Section::start('content'); ?>
+	<?php if(Session::has('success')): ?>
+		<div class="alert alert-sucess">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<p>Visualisation retrieved successfully.</p>
+		</div>
+	<?php endif; ?>
+	<?php if(isset($errors) && count($errors->all()) > 0): ?>
+		<div class='alert alert-error'>
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<ul>
+				<?php foreach($errors->all('<li>:message</li>') as $message): ?>
+				<?php echo  $message ; ?>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	<?php endif; ?>
+	<h2>Retrieve Visualisation</h2>
+	<small>Retreive a deleted visualisation.</small>
+	<?php echo  Form::open('settings/getback', '', array('class' => 'form-horizontal')) ; ?>
+	<p>
+	<?php echo  Form::label('username', "Enter user's student number.") ; ?>
+	<?php echo  Form::text('username', '', array('placeholder' => 'c1xx1xx8')); ?>
+	<?php echo  Form::button('Retrieve', array('class' => 'btn btn-success' )) ; ?>
+	</p>
+	<?php echo  Form::close() ; ?>
+	<br>
+	<?php if(Session::has('retrieved')): ?>
+		<table class="table table-hover">
+			<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Created At</th>
+				<th>Action</th>
+			</tr>
+			</thead>
+			<tbody>
+				<?php foreach(Session::get('retrieved') as $data): ?>
+					<tr>
+						<td><?php echo  $data->id ; ?></td>
+						<td><?php echo  $data->name ; ?></td>
+						<td><?php echo  $data->created_at ; ?></td>
+						<td><?php echo  HTML::link('admin/redeem/'.$data->id, 'Redeem'); ; ?></td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	<?php endif; ?>
+<?php \Laravel\Section::stop(); ?>
+<?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

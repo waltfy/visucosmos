@@ -9,5 +9,7 @@
 	<?php echo  HTML::link('admin/privileges', 'Add Admin Privileges'); ; ?>
 	<br>
 	<?php echo  HTML::link('admin/upload', 'New Data Set'); ; ?>
+	<br>
+	<?php echo  HTML::link('admin/retrieve', 'Retrieve Visualisations'); ; ?>
 <?php \Laravel\Section::stop(); ?>
 <?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

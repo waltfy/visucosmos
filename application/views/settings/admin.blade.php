@@ -10,4 +10,6 @@
 	{{ HTML::link('admin/privileges', 'Add Admin Privileges'); }}
 	<br>
 	{{ HTML::link('admin/upload', 'New Data Set'); }}
+	<br>
+	{{ HTML::link('admin/retrieve', 'Retrieve Visualisations'); }}
 @endsection

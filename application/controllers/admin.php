@@ -23,6 +23,17 @@
 			return View::make('settings.upload');
 		}
 
+		function action_retrieve() {
+			return View::make('settings.retrieve');
+		}
+
+		function action_redeem($id) {
+    	$visualisation = Visualisation::find($id);
+    	$visualisation->is_active = 'Y';
+    	$visualisation->save();
+			return Redirect::to('admin/retrieve')->with('success', true);
+		}
+
 	}
 
 ?>

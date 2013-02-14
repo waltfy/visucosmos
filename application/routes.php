@@ -308,6 +308,37 @@ Route::post('visualisation/new', function(){
 
 });
 
+Route::post('settings/getback', function() {
+
+	$input = Input::all();
+
+	$rules = array(
+		'username' => 'required'
+	);
+
+	$messages	= array(
+
+		'username_required' => 'You must enter a student number to remove admin privileges.',
+
+	);
+
+	$validation = Validator::make($input, $rules, $messages);
+
+	if ($validation->fails())	{
+	  return Redirect::to('admin/retrieve')->with_errors($validation);
+	}
+
+	else {
+
+		$user = User::where('username', '=', Input::get('username'))->first();
+
+		$retrieved = User::find($user->id)->visualisation()->where('is_active', '=', 'N')->get();
+
+		return Redirect::to('admin/retrieve')->with('retrieved', $retrieved);
+	}
+
+});
+
 Route::post('data/generate', function(){
 
 	// $data = Input::all();
