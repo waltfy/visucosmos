@@ -341,14 +341,22 @@ Route::post('settings/getback', function() {
 
 Route::post('data/generate', function(){
 
-	// $data = Input::all();
+	$data = Input::all(); //Collecting all of the input
+	$attributes = $data->attributes; // (attr1, attr3, attr8);
+	$set = $data->set; // e.g. data_set_id = 1;
 
-	// $headers = $data->headers; // (attr1, attr3, attr8);
-	// $values = DB::();
+	$scalar = DB::table('data_sets')->where('id', '=', $set)->only('scalar'); //Grabbing the scalar
+	//Equivelant to SELECT scalar FROM data_sets WHERE id = $set;
 
-	// return Redirect::to('visualisation/edit/'.$visualisation->id)->with('graphs', )
+	$availgraphs == DB::table('graphs')->where('scalar', 'LIKE', '%$scalar%')->only('graph_name') //Only selectng graph if it is the right scalar
 
+	$titles = DB::table('data')->where('data_set_id', '=', $set)->where('line_type', '=', 'H')->get($attributes); 
+	//Equivelant to SELECT $attributes FROM data WHERE data_set_id = '1' AND line_type = 'H'
 
+	$data = DB::table('data')->where('data_set_id', '=', $set)->where('line_type', '=', 'L')->$get($attributes);
+	//Equivelant to SELECT $attributes FROM data WHERE data_set_id = '1' AND line_type = 'L';
+
+	return Redirect::to('visualisation/edit/'.$visualisation->id)->with('availgraphs', 'titles', 'data');
 });
 
 Route::controller(Controller::detect());
