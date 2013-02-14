@@ -341,22 +341,29 @@ Route::post('settings/getback', function() {
 
 Route::post('data/generate', function(){
 
-	$data = Input::all(); //Collecting all of the input
-	$attributes = $data->attributes; // (attr1, attr3, attr8);
-	$set = $data->set; // e.g. data_set_id = 1;
+	$data = Data::where('data_set_id', '=', 1)->get();
+	$data = json_encode($data);
 
-	$scalar = DB::table('data_sets')->where('id', '=', $set)->only('scalar'); //Grabbing the scalar
-	//Equivelant to SELECT scalar FROM data_sets WHERE id = $set;
+	print_r($data);
 
-	$availgraphs == DB::table('graphs')->where('scalar', 'LIKE', '%$scalar%')->only('graph_name') //Only selectng graph if it is the right scalar
+	// $availgraphs = array('chart' => 'bar');
 
-	$titles = DB::table('data')->where('data_set_id', '=', $set)->where('line_type', '=', 'H')->get($attributes); 
-	//Equivelant to SELECT $attributes FROM data WHERE data_set_id = '1' AND line_type = 'H'
+// 	$data = Input::all(); //Collecting all of the input
+// 	$attributes = $data->attributes; // (attr1, attr3, attr8);
+// 	$set = $data->set; // e.g. data_set_id = 1;
 
-	$data = DB::table('data')->where('data_set_id', '=', $set)->where('line_type', '=', 'L')->$get($attributes);
-	//Equivelant to SELECT $attributes FROM data WHERE data_set_id = '1' AND line_type = 'L';
+// 	$scalar = DB::table('data_sets')->where('id', '=', $set)->only('scalar'); //Grabbing the scalar
+// 	//Equivelant to SELECT scalar FROM data_sets WHERE id = $set;
+// 	$availgraphs == DB::table('graphs')->where('scalar', 'LIKE', '%$scalar%')->only('graph_name') //Only selectng graph if it is the right scalar
 
-	return Redirect::to('visualisation/edit/'.$visualisation->id)->with('availgraphs', 'titles', 'data');
+// 	$titles = Data::where('data_set_id', '-')where('data_set_id', '=', $set)->where('line_type', '=', 'H')->get($attributes);
+	
+// 	//Equivelant to SELECT $attributes FROM data WHERE data_set_id = '1' AND line_type = 'H'
+
+// 	$data = DB::table('data')->where('data_set_id', '=', $set)->where('line_type', '=', 'L')->$get($attributes);
+// 	//Equivelant to SELECT $attributes FROM data WHERE data_set_id = '1' AND line_type = 'L';
+
+	// return Redirect::to('visualisation/edit/'.$visualisation->id)->with('data', $data);
 });
 
 Route::controller(Controller::detect());
