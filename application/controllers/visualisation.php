@@ -20,10 +20,10 @@
 		function action_edit($id) {
 			$details = Visualisation::find($id);
 			$dataset = Sets::find($details->data_set_id);
+			$selected = $details->params;
 
 			$attr = Data::where('data_set_id', '=', $details->data_set_id)->where('line_type', '=', 'H')->first();
-
-			return View::make('visualisation.edit')->with('details', $details)->with('dataset', $dataset)->with('attr', $attr);
+			return View::make('visualisation.edit')->with('details', $details)->with('dataset', $dataset)->with('attr', $attr)->with('params', $selected);
 		}
 
 		function action_delete($id) {

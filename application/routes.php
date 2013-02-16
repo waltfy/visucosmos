@@ -341,29 +341,34 @@ Route::post('settings/getback', function() {
 
 Route::post('data/generate', function(){
 
-	$data = Data::where('data_set_id', '=', 1)->get();
-	$data = json_encode($data);
+	$input = Input::all();
 
-	print_r($data);
+	$attr = Input::get('selected_attr');
+
+	$vis_id = Input::get('vis_id');
+	$visu = Visualisation::find($vis_id);
+	$data_set = $visu->data_set_id;
+
+	$attr = implode(', ', $attr);
+
+	$visu->params = $attr;
+	$visu->save();
+
+	$data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->get(Input::get('selected_attr')));
+
+	$data = $data->content;
 
 	// $availgraphs = array('chart' => 'bar');
 
-// 	$data = Input::all(); //Collecting all of the input
-// 	$attributes = $data->attributes; // (attr1, attr3, attr8);
-// 	$set = $data->set; // e.g. data_set_id = 1;
+	$fp = fopen("public_html/json/$vis_id.json", 'w');
+	fwrite($fp, $data);
+	fclose($fp);
 
-// 	$scalar = DB::table('data_sets')->where('id', '=', $set)->only('scalar'); //Grabbing the scalar
-// 	//Equivelant to SELECT scalar FROM data_sets WHERE id = $set;
-// 	$availgraphs == DB::table('graphs')->where('scalar', 'LIKE', '%$scalar%')->only('graph_name') //Only selectng graph if it is the right scalar
+	$visu->json_path = "public_html/json/$vis_id.json";
+	$visu->save();
 
-// 	$titles = Data::where('data_set_id', '-')where('data_set_id', '=', $set)->where('line_type', '=', 'H')->get($attributes);
-	
-// 	//Equivelant to SELECT $attributes FROM data WHERE data_set_id = '1' AND line_type = 'H'
 
-// 	$data = DB::table('data')->where('data_set_id', '=', $set)->where('line_type', '=', 'L')->$get($attributes);
-// 	//Equivelant to SELECT $attributes FROM data WHERE data_set_id = '1' AND line_type = 'L';
-
-	// return Redirect::to('visualisation/edit/'.$visualisation->id)->with('data', $data);
+	return Redirect::to('visualisation/edit/'.$vis_id)->with('response', $visu->json_path);
 });
 
 Route::controller(Controller::detect());

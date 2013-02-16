@@ -11,20 +11,40 @@
 			</ul>
 		</div>
 	<?php endif; ?>
-	<h2><?php echo  $details->name ; ?><small> @ <?php echo  $dataset->name ; ?></small></h2>
+	<h2><?php echo  $details->name ; ?><small> @ <?php echo  $dataset->name ; ?></small> <?php echo  HTML::link('visualisation/delete/'.$details->id, 'Delete', array('class' => 'btn btn-danger')) ; ?></h2>
 	<small>Edit details such as attributes and columns.</small>
 	<?php echo  Form::open('data/generate', '', array('class' => 'form-horizontal')) ; ?>
-	<p>
-	<?php echo  Form::label('attributes', "Pick your attributes.") ; ?>
-	<?php echo  $attr->attr2 ; ?>
-	</p>
-	<p>
+	<div class='col span12'>
+		<div class='col span6'>
+			<?php echo  Form::label('all_attr', "Pick your attributes.") ; ?>
+			<select name='all_attr' id='all_attr' multiple='multiple'>
+				<?
+					for ( $i = 1; $i < count($attr->attributes)-3; $i++) {
+						if ($attr->attributes["attr$i"] == null) {
+							break;
+						}
 
-	</p>
-	<?php echo  HTML::link('visualisation/delete/'.$details->id, 'Delete', array('class' => 'btn btn-danger')) ; ?>
+						else {
+							echo "<option value='attr".$i."'>".$attr->attributes["attr$i"]."</option>";
+						}
+					}
+				?>
+			</select>
+			<p><?php echo  HTML::link('#', 'Add', array('class' => 'btn btn-success', 'id' => 'add_attr')) ; ?></p>
+		</div>
+		<div class='col span6'>
+			<?php echo  Form::label('selected_attr', "Selected attributes.") ; ?>
+			<select name='selected_attr[]' id='selected_attr' multiple='multiple'>
+			</select>
+			<p><?php echo  HTML::link('#', 'Remove', array('class' => 'btn btn-danger', 'id' => 'rm_attr')) ; ?></p>
+		</div>  
+	</div>
 	<?php echo  Form::hidden('vis_id', $details->id) ; ?>
-	<?php echo  Form::button('Generate Previews', array('class' => 'btn btn-success' )) ; ?>
-	
+	<?php echo  Form::button('Generate Previews', array('class' => 'btn' )) ; ?>
 	<?php echo  Form::close() ; ?>
+	<?php if(Session::has('response')): ?>
+		<p>Works</p>
+		<? echo $response = Session::get('response'); ?>
+	<?php endif; ?>
 <?php \Laravel\Section::stop(); ?>
 <?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>
