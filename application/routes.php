@@ -341,29 +341,52 @@ Route::post('settings/getback', function() {
 
 Route::post('data/generate', function(){
 
-	$data = Data::where('data_set_id', '=', 1)->get();
-	$data = json_encode($data);
+	$input = Input::all();
 
-	print_r($data);
+	$attr = Input::get('selected_attr');
+	$attr = serialize($attr);
 
-	// $availgraphs = array('chart' => 'bar');
+	$vis_id = Input::get('vis_id');
+	$visu = Visualisation::find($vis_id);
+	$data_set = $visu->data_set_id;
 
-// 	$data = Input::all(); //Collecting all of the input
-// 	$attributes = $data->attributes; // (attr1, attr3, attr8);
-// 	$set = $data->set; // e.g. data_set_id = 1;
+	$rules = array(
+		'selected_attr' => 'required'
+	);
 
-// 	$scalar = DB::table('data_sets')->where('id', '=', $set)->only('scalar'); //Grabbing the scalar
-// 	//Equivelant to SELECT scalar FROM data_sets WHERE id = $set;
-// 	$availgraphs == DB::table('graphs')->where('scalar', 'LIKE', '%$scalar%')->only('graph_name') //Only selectng graph if it is the right scalar
+	$messages	= array(
 
-// 	$titles = Data::where('data_set_id', '-')where('data_set_id', '=', $set)->where('line_type', '=', 'H')->get($attributes);
-	
-// 	//Equivelant to SELECT $attributes FROM data WHERE data_set_id = '1' AND line_type = 'H'
+		'selected_attr_required' => 'You must selected at least one attribute.',
 
-// 	$data = DB::table('data')->where('data_set_id', '=', $set)->where('line_type', '=', 'L')->$get($attributes);
-// 	//Equivelant to SELECT $attributes FROM data WHERE data_set_id = '1' AND line_type = 'L';
+	);
 
-	// return Redirect::to('visualisation/edit/'.$visualisation->id)->with('data', $data);
+	$validation = Validator::make($input, $rules, $messages);
+
+	if ($validation->fails())	{
+
+		return Redirect::to('visualisation/edit/'.$vis_id)->with_errors($validation);
+
+	}
+
+	else {
+		
+		$visu->params = $attr;
+		$visu->save();
+
+		$data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->get(Input::get('selected_attr')));
+
+		$data = $data->content;
+
+		$fp = fopen("public_html/json/$vis_id.json", 'w');
+		fwrite($fp, $data);
+		fclose($fp);
+
+		$visu->json_path = "public_html/json/$vis_id.json";
+		$visu->save();
+
+		return Redirect::to('visualisation/edit/'.$vis_id)->with('response', $visu->json_path)->with('saved_attr', $attr);
+	}
+
 });
 
 Route::controller(Controller::detect());
