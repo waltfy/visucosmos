@@ -344,31 +344,49 @@ Route::post('data/generate', function(){
 	$input = Input::all();
 
 	$attr = Input::get('selected_attr');
+	$attr = serialize($attr);
 
 	$vis_id = Input::get('vis_id');
 	$visu = Visualisation::find($vis_id);
 	$data_set = $visu->data_set_id;
 
-	$attr = implode(', ', $attr);
+	$rules = array(
+		'selected_attr' => 'required'
+	);
 
-	$visu->params = $attr;
-	$visu->save();
+	$messages	= array(
 
-	$data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->get(Input::get('selected_attr')));
+		'selected_attr_required' => 'You must selected at least one attribute.',
 
-	$data = $data->content;
+	);
 
-	// $availgraphs = array('chart' => 'bar');
+	$validation = Validator::make($input, $rules, $messages);
 
-	$fp = fopen("public_html/json/$vis_id.json", 'w');
-	fwrite($fp, $data);
-	fclose($fp);
+	if ($validation->fails())	{
 
-	$visu->json_path = "public_html/json/$vis_id.json";
-	$visu->save();
+		return Redirect::to('visualisation/edit/'.$vis_id)->with_errors($validation);
 
+	}
 
-	return Redirect::to('visualisation/edit/'.$vis_id)->with('response', $visu->json_path);
+	else {
+		
+		$visu->params = $attr;
+		$visu->save();
+
+		$data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->get(Input::get('selected_attr')));
+
+		$data = $data->content;
+
+		$fp = fopen("public_html/json/$vis_id.json", 'w');
+		fwrite($fp, $data);
+		fclose($fp);
+
+		$visu->json_path = "public_html/json/$vis_id.json";
+		$visu->save();
+
+		return Redirect::to('visualisation/edit/'.$vis_id)->with('response', $visu->json_path)->with('saved_attr', $attr);
+	}
+
 });
 
 Route::controller(Controller::detect());

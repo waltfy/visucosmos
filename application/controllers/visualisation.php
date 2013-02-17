@@ -20,10 +20,22 @@
 		function action_edit($id) {
 			$details = Visualisation::find($id);
 			$dataset = Sets::find($details->data_set_id);
-			$selected = $details->params;
+			$saved_params = unserialize($details->params);
 
 			$attr = Data::where('data_set_id', '=', $details->data_set_id)->where('line_type', '=', 'H')->first();
-			return View::make('visualisation.edit')->with('details', $details)->with('dataset', $dataset)->with('attr', $attr)->with('params', $selected);
+
+			if ($saved_params != null) {
+				$saved = Data::where('data_set_id', '=', $details->data_set_id)->where('line_type', '=', 'H')->first($saved_params);	
+				$saved = $saved->attributes;
+			}
+
+			else {
+				$saved = array();
+			}
+			
+			$attr = $attr->attributes;
+			$available = array_diff($attr, $saved);
+			return View::make('visualisation.edit')->with('details', $details)->with('dataset', $dataset)->with('attr', $available)->with('saved', $saved);
 		}
 
 		function action_delete($id) {
