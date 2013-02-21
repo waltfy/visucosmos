@@ -25,13 +25,13 @@
 		</div>
 	@endif
 	<h2>Add Data Set</h2>
-	{{ Form::open('settings/add_admin', '', array('class' => 'form-horizontal')) }}
+	{{ Form::open_for_files('settings/add_data', '', array('class' => 'form-horizontal')) }}
 	<p>
 	{{ Form::label('name', "Enter a data set name.") }}
 	{{ Form::text('name', '', array('placeholder' => 'Twitter Data'))}}
 	</p>
 	<p>
-	{{ Form::label('description', "Enter a data set name.") }}
+	{{ Form::label('description', "Enter a data set description.") }}
 	{{ Form::textarea('description', '', array('placeholder' => 'Twitter Data', 'rows' => '3'))}}
 	</p>
 	<p>

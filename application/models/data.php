@@ -1,7 +1,9 @@
 <?php
 
 	class Data extends Eloquent {
-
+	
+	  public static $timestamps = FALSE;
+	  
 		public static $table = 'data';
 
 		public function visualisation() {
