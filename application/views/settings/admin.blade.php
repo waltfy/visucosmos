@@ -3,7 +3,7 @@
 
 @section('content')
 	<h2>Administrator Settings</h2>
-	<small>Perform tasks that affect the system directly.</small>
+	<small>Perform admin tasks. These changes will affect the system directly.</small>
 	<br>
 	{{ HTML::link('admin/newuser', 'Add User'); }}
 	<br>

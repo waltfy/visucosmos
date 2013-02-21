@@ -3,13 +3,13 @@
 
 @section('content')
 	@if (Session::has('add_success'))
-		<div class="alert alert-sucess">
+		<div class="alert alert-success">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<p>User is now an administrator.</p>
 		</div>
 	@endif
 	@if (Session::has('remove_success'))
-		<div class="alert alert-sucess">
+		<div class="alert alert-success">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<p>User is not an administrator anymore.</p>
 		</div>

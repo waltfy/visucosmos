@@ -1,8 +1,8 @@
 <?
 	
 	HTML::macro('nav_link', function($url, $icon, $other_class) {
-    $active = ( URI::is($url) || URI::is($url.'/*') ) ? ' selected' : '';
-    return '<li class="'.$active.' '.$other_class.'"><a href="'.URL::to($url).'"><i class="icon-'.$icon.'"></i></a></li>';
+		$active = ( URI::is($url) || URI::is($url.'/*') ) ? ' selected' : '';
+		return '<li class="'.$active.' '.$other_class.'"><a href="'.URL::to($url).'"><i class="icon-'.$icon.'"></i></a></li>';
 	});
 
 	$is_admin = Auth::user()->is_admin;

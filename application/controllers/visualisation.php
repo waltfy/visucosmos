@@ -21,6 +21,15 @@
 			$details = Visualisation::find($id);
 			$dataset = Sets::find($details->data_set_id);
 			$saved_params = unserialize($details->params);
+			$graphs = unserialize($details->available_graphs);
+
+			if ($details->available_graphs != null && $graphs != null) {
+				$available_graphs = Graphs::where_in('id', $graphs)->get();
+			}
+
+			else {
+				$available_graphs = array();
+			}
 
 			$attr = Data::where('data_set_id', '=', $details->data_set_id)->where('line_type', '=', 'H')->first();
 
@@ -35,7 +44,11 @@
 			
 			$attr = $attr->attributes;
 			$available = array_diff($attr, $saved);
-			return View::make('visualisation.edit')->with('details', $details)->with('dataset', $dataset)->with('attr', $available)->with('saved', $saved);
+			return View::make('visualisation.edit')->with('details', $details)->with('dataset', $dataset)->with('attr', $available)->with('saved', $saved)->with('graphs', $available_graphs);
+		}
+
+		function action_download($id) {
+			return Visualisation::get_json($id);
 		}
 
 		function action_delete($id) {

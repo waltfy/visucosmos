@@ -12,7 +12,13 @@
 			</ul>
 		</div>
 	@endif
-	<h2>{{ $details->name }}<small> @ {{ $dataset->name }}</small> {{ HTML::link('visualisation/delete/'.$details->id, 'Delete', array('class' => 'btn btn-danger')) }}</h2>
+	<h2>
+		{{ $details->name }}<small> @ {{ $dataset->name }}</small>
+		{{ HTML::link('visualisation/delete/'.$details->id, 'Delete', array('class' => 'btn btn-danger')) }}
+		@if ($details->json_path != null)
+			{{ HTML::link('visualisation/download/'.$details->id, 'Download', array('class' => 'btn btn-success')) }}
+		@endif
+	</h2>
 	<small>Edit details such as attributes and columns.</small>
 	{{ Form::open('data/generate', '', array('class' => 'form-horizontal', 'onSubmit' => "selectAllOptions('selected_attr');")) }}
 	<div class='col span12'>
@@ -20,7 +26,6 @@
 			{{ Form::label('all_attr', "Pick your attributes.") }}
 			<select name='all_attr' id='all_attr' multiple='multiple'>
 				<?
-
 					$attr = array_slice($attr, 3);
 
 					foreach($attr as $key => $value) {
@@ -47,7 +52,17 @@
 	{{ Form::hidden('vis_id', $details->id) }}
 	{{ Form::button('Generate Previews', array('class' => 'btn' )) }}
 	{{ Form::close() }}
+	<br>
 	@if (Session::has('response'))
-		<? echo $response = Session::get('response'); ?>
+	<? $response = File::get(Session::get('response')); ?>
+		<div class='col span12'>
+			@foreach ($graphs as $render)
+				<div class='col span4' id='render'>
+					<script type="text/javascript">wordCloud('public_html/json/json.json');</script>
+						<? // echo "<script type='text/javascript'>".$render->attributes['function']."</script>;"; ?>
+				</div>
+			@endforeach
+			
+		</div>
 	@endif
 @endsection

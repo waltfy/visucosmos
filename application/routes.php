@@ -318,7 +318,7 @@ Route::post('settings/getback', function() {
 
 	$messages	= array(
 
-		'username_required' => 'You must enter a student number to remove admin privileges.',
+		'username_required' => 'You must enter a student number to retrieve a visualisation.',
 
 	);
 
@@ -343,12 +343,11 @@ Route::post('data/generate', function(){
 
 	$input = Input::all();
 
-	$attr = Input::get('selected_attr');
-	$attr = serialize($attr);
-
 	$vis_id = Input::get('vis_id');
 	$visu = Visualisation::find($vis_id);
 	$data_set = $visu->data_set_id;
+
+	$attr = Input::get('selected_attr');
 
 	$rules = array(
 		'selected_attr' => 'required'
@@ -369,7 +368,25 @@ Route::post('data/generate', function(){
 	}
 
 	else {
-		
+
+		$data_types = Data::where('data_set_id', '=', $data_set)->where('line_type', '=', 'T')->first($attr);
+	
+		$types = array();
+
+		foreach ($data_types->attributes as $type) {
+			array_push($types, $type);
+		}
+
+		$dimension = count($data_types->attributes);
+
+		$available_graphs = Data::validateType($types);
+
+		$available_graphs = serialize($available_graphs);
+		$visu->available_graphs = $available_graphs;
+		$visu->dimension = $dimension;
+		$visu->save();
+
+		$attr = serialize($attr);
 		$visu->params = $attr;
 		$visu->save();
 
@@ -377,9 +394,7 @@ Route::post('data/generate', function(){
 
 		$data = $data->content;
 
-		$fp = fopen("public_html/json/$vis_id.json", 'w');
-		fwrite($fp, $data);
-		fclose($fp);
+		File::put("public_html/json/$vis_id.json", $data);
 
 		$visu->json_path = "public_html/json/$vis_id.json";
 		$visu->save();

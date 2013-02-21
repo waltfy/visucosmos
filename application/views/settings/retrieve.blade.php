@@ -3,7 +3,7 @@
 
 @section('content')
 	@if (Session::has('success'))
-		<div class="alert alert-sucess">
+		<div class="alert alert-success">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<p>Visualisation retrieved successfully.</p>
 		</div>

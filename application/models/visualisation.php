@@ -8,6 +8,10 @@
       return $this->belongs_to('User');
     }
 
+    public static function get_json($id) {
+    	return Response::download('public_html/json/'.$id.'.json');
+    }
+
 	}
 
 ?>
