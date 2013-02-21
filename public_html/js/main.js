@@ -25,29 +25,32 @@ function wordCloud(filename) {
 	var file = filename;
 	var text = "";
 
-	$.getJSON(file, function(data) {
+	createGraph(['billy','walter', 'billy'], ['billy','walter', 'billy'])
 
-		$.each(data, function(key, val) {
-			text = text.concat(val.toString() + " ");
-		});
+	// $.getJSON(file, function(data) {
 
-		formatData(text);
-	});
+	// 	$.each(data, function(key, val) {
+	// 		text = text.concat(val.toString() + " ");
+	// 	});
+
+	// 	formatData(text);
+	// });
 
 
-	function formatData(text)	{
-		var data = text; 
-		var dataarray = data.split(" ");
-		var unique = [];
+	// function formatData(text)	{
+
+	// 	var data = text; 
+	// 	var dataarray = data.split(" ");
+	// 	var unique = [];
 		
-		$.each(dataarray, function(i, el){
-			if($.inArray(el, unique) === -1) 
-				unique.push(el);
-		});
+	// 	$.each(dataarray, function(i, el){
+	// 		if($.inArray(el, unique) === -1) 
+	// 			unique.push(el);
+	// 	});
 
 
-		window.setTimeout(createGraph(dataarray, unique), 50);
-	}
+	// 	window.setTimeout(createGraph(dataarray, unique), 50);
+	// }
 
 	function createGraph(dataarray, unique)	{
 		
@@ -78,7 +81,7 @@ function wordCloud(filename) {
 
 		var fill = d3.scale.category20();
 
-			d3.layout.cloud().size([700, 500])
+			d3.layout.cloud().size([400, 200])
 				.words(d3.zip(uniquevalues, counts).map(function(d) {
 				return {text: d[0], size: d[1]};
 				}))
@@ -90,10 +93,10 @@ function wordCloud(filename) {
 
 		function draw(words) {
 			d3.select("#render").append("svg")
-					.attr("width", 700)
-					.attr("height", 500)
+					.attr("width", 400)
+					.attr("height", 200)
 				.append("g")
-					.attr("transform", "translate(350,250)")
+					.attr("transform", "translate(200,100)")
 				.selectAll("text")
 					.data(words)
 				.enter().append("text")
