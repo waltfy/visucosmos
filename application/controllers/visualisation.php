@@ -18,33 +18,49 @@
 		}
 
 		function action_edit($id) {
-			$details = Visualisation::find($id);
-			$dataset = Sets::find($details->data_set_id);
-			$saved_params = unserialize($details->params);
-			$graphs = unserialize($details->available_graphs);
 
-			if ($details->available_graphs != null && $graphs != null) {
-				$available_graphs = Graphs::where_in('id', $graphs)->get();
+			$visualisations = User::find(Auth::user()->id)->visualisation()->get('id');
+			$owns = array();
+
+			foreach ($visualisations as $visu) {
+				array_push($owns, $visu->attributes['id']);
+			}
+
+			if (in_array($id, $owns)) {
+				
+				$details = Visualisation::find($id);
+				$dataset = Sets::find($details->data_set_id);
+				$saved_params = unserialize($details->params);
+				$graphs = unserialize($details->available_graphs);
+
+				if ($details->available_graphs != null && $graphs != null) {
+					$available_graphs = Graphs::where_in('id', $graphs)->get();
+				}
+
+				else {
+					$available_graphs = array();
+				}
+
+				$attr = Data::where('data_set_id', '=', $details->data_set_id)->where('line_type', '=', 'H')->first();
+
+				if ($saved_params != null) {
+					$saved = Data::where('data_set_id', '=', $details->data_set_id)->where('line_type', '=', 'H')->first($saved_params);	
+					$saved = $saved->attributes;
+				}
+
+				else {
+					$saved = array();
+				}
+				
+				$attr = $attr->attributes;
+				$available = array_diff($attr, $saved);
+				return View::make('visualisation.edit')->with('details', $details)->with('dataset', $dataset)->with('attr', $available)->with('saved', $saved)->with('graphs', $available_graphs);
 			}
 
 			else {
-				$available_graphs = array();
+				return Redirect::to('dashboard')->with('not_owner', true);
 			}
 
-			$attr = Data::where('data_set_id', '=', $details->data_set_id)->where('line_type', '=', 'H')->first();
-
-			if ($saved_params != null) {
-				$saved = Data::where('data_set_id', '=', $details->data_set_id)->where('line_type', '=', 'H')->first($saved_params);	
-				$saved = $saved->attributes;
-			}
-
-			else {
-				$saved = array();
-			}
-			
-			$attr = $attr->attributes;
-			$available = array_diff($attr, $saved);
-			return View::make('visualisation.edit')->with('details', $details)->with('dataset', $dataset)->with('attr', $available)->with('saved', $saved)->with('graphs', $available_graphs);
 		}
 
 		function action_download($id) {

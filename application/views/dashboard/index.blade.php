@@ -8,6 +8,12 @@
 				<p>Visualisation has been deleted.</p>
 		</div>
 	@endif
+	@if (Session::has('not_owner'))
+		<div class="alert alert-error">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<p>You must be the owner to edit that visualisation.</p>
+		</div>
+	@endif
 	@if (Session::has('not_admin'))
 		<div class="alert alert-error">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>

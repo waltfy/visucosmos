@@ -9,6 +9,7 @@
 		}
 
 		static function validateType($types) {
+			
 			$available_graphs = array();
 
 			$dimension = count($types);

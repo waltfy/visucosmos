@@ -2,13 +2,13 @@
 
 <?php \Laravel\Section::start('content'); ?>
 	<?php if(Session::has('add_success')): ?>
-		<div class="alert alert-sucess">
+		<div class="alert alert-success">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<p>Data Set Uploaded Successfully.</p>
 		</div>
 	<?php endif; ?>
 	<?php if(Session::has('remove_success')): ?>
-		<div class="alert alert-sucess">
+		<div class="alert alert-success">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<p>Upload Failed.</p>
 		</div>

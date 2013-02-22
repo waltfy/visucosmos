@@ -22,35 +22,40 @@ function selectAllOptions(selStr) {
 
 function wordCloud(filename) {
 	console.log("wordCloud is being called");
+
 	var file = filename;
-	var text = "";
+	var header = "";
+	var content = "";
 
-	createGraph(['billy','walter', 'billy'], ['billy','walter', 'billy'])
+	$.getJSON("http://localhost/visucosmos-git/"+file, function(data) {
+		// $.getJSON("http://www.visucosmos.info/"+file+"&callback=?", function(data) {
 
-	// $.getJSON(file, function(data) {
+		$.each(data, function(key, val) {
+			$.each(val, function(key, val) {
+				// console.log(val);
+				content = content.concat(val.toString() + " ");	
+			});
+		});
 
-	// 	$.each(data, function(key, val) {
-	// 		text = text.concat(val.toString() + " ");
-	// 	});
+		formatData(content);
 
-	// 	formatData(text);
-	// });
+	});
 
+	
+	function formatData(text)	{
 
-	// function formatData(text)	{
-
-	// 	var data = text; 
-	// 	var dataarray = data.split(" ");
-	// 	var unique = [];
+		var data = text; 
+		var dataarray = data.split(" ");
+		var unique = [];
 		
-	// 	$.each(dataarray, function(i, el){
-	// 		if($.inArray(el, unique) === -1) 
-	// 			unique.push(el);
-	// 	});
+		$.each(dataarray, function(i, el){
+			if($.inArray(el, unique) === -1) 
+				unique.push(el);
+		});
 
 
-	// 	window.setTimeout(createGraph(dataarray, unique), 50);
-	// }
+		window.setTimeout(createGraph(dataarray, unique), 50);
+	}
 
 	function createGraph(dataarray, unique)	{
 		
@@ -80,28 +85,32 @@ function wordCloud(filename) {
 		// console.log(counts);
 
 		var fill = d3.scale.category20();
+		var width = 241;
+		var height = 208;
 
-			d3.layout.cloud().size([400, 200])
+			d3.layout.cloud().size([width, height])
 				.words(d3.zip(uniquevalues, counts).map(function(d) {
 				return {text: d[0], size: d[1]};
 				}))
 				.rotate(function() { return ~~(Math.random() * 2) * 90; })
-				.font("Impact")
+				.font("Open Sans")
 				.fontSize(function(d) { return d.size * 20; })
 				.on("end", draw)
 				.start();
 
 		function draw(words) {
 			d3.select("#render").append("svg")
-					.attr("width", 400)
-					.attr("height", 200)
+					.attr("width", width)
+					.attr("height", height)
+					.attr("viewBox", "0 0 " + width + " " + height)
+					.attr("preserveAspectRatio", "xMidYMid meet")
 				.append("g")
-					.attr("transform", "translate(200,100)")
+					.attr("transform", "translate("+width/2+","+height/2+")")
 				.selectAll("text")
 					.data(words)
 				.enter().append("text")
 					.style("font-size", function(d) { return d.size + "px"; })
-					.style("font-family", "Impact")
+					.style("font-family", "Open Sans")
 					.style("fill", function(d, i) { return fill(i); })
 					.attr("text-anchor", "middle")
 					.attr("transform", function(d) {

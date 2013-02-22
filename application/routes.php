@@ -266,7 +266,7 @@ Route::post('admin/register', function() {
 
 		$to = $email;
 		$subject = "Your VisuCosmos Account!";
-		$message = "Hello! Welcome to VisuCosmos, your password is: '$password', please change this asap. Simply login with your email.";
+		$message = "Hello! Welcome to VisuCosmos, your password is: '$password', please change this asap. Simply login with your email @ http://visucosmos.info";
 		$from = "VisuCosmos";
 		$headers = "From:" . $from;
 		mail($to,$subject,$message,$headers);
@@ -391,7 +391,6 @@ Route::post('data/generate', function(){
 		$visu->save();
 
 		$data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->get(Input::get('selected_attr')));
-
 		$data = $data->content;
 
 		File::put("public_html/json/$vis_id.json", $data);
@@ -406,27 +405,38 @@ Route::post('data/generate', function(){
 
 Route::controller(Controller::detect());
 
-Route::filter('before', function()
-{
+Route::filter('before', function() {
 	// Do stuff before every request to your application...
 });
 
-Route::filter('after', function($response)
-{
+Route::filter('after', function($response) {
 	// Do stuff after every request to your application...
 });
 
-Route::filter('csrf', function()
-{
+Route::filter('csrf', function() {
 	if (Request::forged()) return Response::error('500');
 });
 
-Route::filter('auth', function()
-{
+Route::filter('auth', function() {
 	if (Auth::guest()) return Redirect::to('home');
 });
 
-Route::filter('admin_auth', function()
-{
+Route::filter('owner', function($id) {
+	echo "called";
+	$visualisations = User::find(Auth::user()->id)->visualisation()->get('id');
+	echo "test".$id;
+	// $owns = array();
+
+	// foreach ($visualisations as $visu) {
+	// 	array_push($owns, $visu->attributes['id']);
+	// }
+
+	// if (!in_array($id, $owns)) {
+	// 	return Redirect::to('dashboard');
+	// }
+		
+});
+
+Route::filter('admin_auth', function() {
 	if (Auth::user()->is_admin == 'N') return Redirect::to('dashboard')->with('not_admin', true);
 });

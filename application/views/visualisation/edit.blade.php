@@ -14,10 +14,10 @@
 	@endif
 	<h2>
 		{{ $details->name }}<small> @ {{ $dataset->name }}</small>
-		{{ HTML::link('visualisation/delete/'.$details->id, 'Delete', array('class' => 'btn btn-danger')) }}
 		@if ($details->json_path != null)
-			{{ HTML::link('visualisation/download/'.$details->id, 'Download', array('class' => 'btn btn-success')) }}
+			<small>{{ HTML::link('visualisation/download/'.$details->id, " Download", array('class' => 'icon-download')) }}</small>
 		@endif
+		{{ HTML::link('visualisation/delete/'.$details->id, 'Delete', array('class' => 'btn btn-danger')) }}
 	</h2>
 	<small>Edit details such as attributes and columns.</small>
 	{{ Form::open('data/generate', '', array('class' => 'form-horizontal', 'onSubmit' => "selectAllOptions('selected_attr');")) }}
@@ -54,12 +54,12 @@
 	{{ Form::close() }}
 	<br>
 	@if (Session::has('response'))
-	<? $response = File::get(Session::get('response')); ?>
+	<? $response = Session::get('response'); ?>
+
 		<div class='col span12'>
 			@foreach ($graphs as $render)
 				<div class='col span4' id='render'>
-					<script type="text/javascript">wordCloud('public_html/json/json.json');</script>
-						<? // echo "<script type='text/javascript'>".$render->attributes['function']."</script>;"; ?>
+						<? echo "<script type='text/javascript'>".$render->attributes['function']."('$response');</script>"; ?>
 				</div>
 			@endforeach
 			
