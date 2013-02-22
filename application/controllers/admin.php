@@ -33,6 +33,14 @@
     	$visualisation->save();
 			return Redirect::to('admin/retrieve')->with('success', true);
 		}
+		
+		function action_storedata(){
+	    
+	    $Input = Input::all();
+	    $DS_id = Data::saveToDatabase($Input);
+		  return View::make('settings.dataSet')
+		    ->with('DS_id',$DS_id);
+		}
 
 	}
 

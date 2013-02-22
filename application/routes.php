@@ -276,6 +276,8 @@ Route::post('admin/register', function() {
 
 });
 
+Route::post('settings/add_data', 'admin@storedata');
+
 Route::post('visualisation/new', function(){
 
 	$input = Input::all();
