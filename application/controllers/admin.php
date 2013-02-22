@@ -69,7 +69,7 @@
       
       //creates view   
 		  return View::make('settings.dataSet')
-		    ->with('DataSet',$DS_id);
+		    ->with('Inputs',$Input);
 		}
 
 	}
