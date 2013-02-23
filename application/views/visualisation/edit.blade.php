@@ -54,15 +54,14 @@
 	{{ Form::close() }}
 	<br>
 	@if (Session::has('response'))
-	<? $response = Session::get('response'); ?>
-
+	<? $response = Session::get('response'); $i = 1; ?>
 		<div class='col span12'>
 			@foreach ($graphs as $render)
-				<div class='col span4' id='render'>
-						<? echo "<script type='text/javascript'>".$render->attributes['function']."('$response');</script>"; ?>
+				<div class='col span4' id='render{{$i}}' graphId='{{ $render->id }}'>
+						<? echo "<script type='text/javascript'>".$render->attributes['function']."('$response', 'render$i');</script>"; ?>
 				</div>
+				<? $i++; ?>
 			@endforeach
-			
 		</div>
 	@endif
 @endsection

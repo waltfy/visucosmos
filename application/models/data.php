@@ -11,19 +11,36 @@
 		}
 
 		static function validateType($types) {
+
+			echo "<pre>";
+			print_r($types);
+			echo "</pre>";
 			
+			$wordCloud = explode(', ', Graphs::where('id', '=', '3')->only('type'));
+			$barChart = explode(', ', Graphs::where('id', '=', '2')->only('type'));
+
+			// echo "<pre>";
+			// print_r($barChart);
+			// echo "</pre>";
+
 			$available_graphs = array();
 
 			$dimension = count($types);
 
 			if ($dimension == 1) {
 
-				if ($types[0] == 'string') {
-					$graphs = Graphs::where('type', '=', 'string')->get('id');
+				// WordCloud, 1 Dimension - String
+				if (in_array($types[0], $wordCloud)) {
+						array_push($available_graphs, '3');
+				}
 
-					foreach ($graphs as $value) {
-						array_push($available_graphs, $value->attributes['id']);
-					}
+			}
+
+			if ($dimension == 2) {
+
+				// BarChart, 2 Dimensions - String && Int || Float
+				if (in_array($types[0], $barChart) && in_array($types[1], $barChart)) {
+					array_push($available_graphs, '2');
 				}
 
 			}
