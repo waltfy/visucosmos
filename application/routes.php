@@ -383,24 +383,24 @@ Route::post('data/generate', function(){
 
 		$available_graphs = Data::validateType($types);
 
-		// $available_graphs = serialize($available_graphs);
-		// $visu->available_graphs = $available_graphs;
-		// $visu->dimension = $dimension;
-		// $visu->save();
+		$available_graphs = serialize($available_graphs);
+		$visu->available_graphs = $available_graphs;
+		$visu->dimension = $dimension;
+		$visu->save();
 
-		// $attr = serialize($attr);
-		// $visu->params = $attr;
-		// $visu->save();
+		$attr = serialize($attr);
+		$visu->params = $attr;
+		$visu->save();
 
-		// $data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->get(Input::get('selected_attr')));
-		// $data = $data->content;
+		$data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->get(Input::get('selected_attr')));
+		$data = $data->content;
 
-		// File::put("public_html/json/$vis_id.json", $data);
+		File::put("public_html/json/$vis_id.json", $data);
 
-		// $visu->json_path = "public_html/json/$vis_id.json";
-		// $visu->save();
+		$visu->json_path = "public_html/json/$vis_id.json";
+		$visu->save();
 
-		// return Redirect::to('visualisation/edit/'.$vis_id)->with('response', $visu->json_path)->with('saved_attr', $attr);
+		return Redirect::to('visualisation/edit/'.$vis_id)->with('response', $visu->json_path)->with('saved_attr', $attr);
 	}
 
 });

@@ -17,6 +17,7 @@
 			echo "</pre>";
 			
 			$wordCloud = explode(', ', Graphs::where('id', '=', '3')->only('type'));
+			$wordCloud2 = explode(', ', Graphs::where('id', '=', '9')->only('type'));
 			$barChart = explode(', ', Graphs::where('id', '=', '2')->only('type'));
 
 			// echo "<pre>";
@@ -34,11 +35,15 @@
 						array_push($available_graphs, '3');
 				}
 
+				if (in_array($types[0], $wordCloud2)) {
+						array_push($available_graphs, '9');
+				}
+
 			}
 
 			if ($dimension == 2) {
 
-				// BarChart, 2 Dimensions - String && Int || Float
+				// BarChart, 2 Dimensions - String && Int || String && Float
 				if (in_array($types[0], $barChart) && in_array($types[1], $barChart)) {
 					array_push($available_graphs, '2');
 				}

@@ -32,8 +32,8 @@ function wordCloud(filename, div) {
 	var header = "";
 	var content = "";
 
-	$.getJSON("http://localhost/visucosmos-git/"+file, function(data) {
-		// $.getJSON("http://www.visucosmos.info/"+file+"&callback=?", function(data) {
+	// $.getJSON("http://localhost/visucosmos-git/"+file, function(data) {
+		$.getJSON("http://visucosmos.info/public_html/"+file, function(data) {
 
 		$.each(data, function(key, val) {
 			$.each(val, function(key, val) {
