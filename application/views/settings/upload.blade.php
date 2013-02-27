@@ -25,7 +25,7 @@
 		</div>
 	@endif
 	<h2>Add Data Set</h2>
-	{{ Form::open_for_files('settings/add_data', '', array('class' => 'form-horizontal')) }}
+	{{ Form::open_for_files('settings/add_data', 'POST', array('class' => 'form-horizontal')) }}
 	<p>
 	{{ Form::label('name', "Enter a data set name.") }}
 	{{ Form::text('name', '', array('placeholder' => 'Twitter Data'))}}
