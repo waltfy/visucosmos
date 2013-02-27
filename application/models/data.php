@@ -16,9 +16,11 @@
 			print_r($types);
 			echo "</pre>";
 			
-			$wordCloud = explode(', ', Graphs::where('id', '=', '3')->only('type'));
-			$wordCloud2 = explode(', ', Graphs::where('id', '=', '9')->only('type'));
+			$pieChart = explode(', ', Graphs::where('id', '=', '1')->only('type'));
 			$barChart = explode(', ', Graphs::where('id', '=', '2')->only('type'));
+			$wordCloud = explode(', ', Graphs::where('id', '=', '3')->only('type'));
+			$locationPlot = explode(', ', Graphs::where('id', '=', '10')->only('type'));
+			$coordPlot = explode(', ', Graphs::where('id', '=', '11')->only('type'));
 
 			// echo "<pre>";
 			// print_r($barChart);
@@ -30,22 +32,31 @@
 
 			if ($dimension == 1) {
 
-				// WordCloud, 1 Dimension - String
-				if (in_array($types[0], $wordCloud)) {
-						array_push($available_graphs, '3');
+				// Pie Chart, 1 Dimension - Float || Int
+				if (in_array($types[0], $pieChart)) {
+					array_push($available_graphs, '1');
 				}
 
-				if (in_array($types[0], $wordCloud2)) {
-						array_push($available_graphs, '9');
+				// Bar Chart, 1 Dimension - Float || Int
+				if (in_array($types[0], $barChart)) {
+					array_push($available_graphs, '2');
+				}
+
+				// WordCloud, 1 Dimension - String
+				if (in_array($types[0], $wordCloud)) {
+					array_push($available_graphs, '3');
+				}
+
+				if (in_array($types[0], $locationPlot)) {
+					array_push($available_graphs, '10');
 				}
 
 			}
 
 			if ($dimension == 2) {
 
-				// BarChart, 2 Dimensions - String && Int || String && Float
-				if (in_array($types[0], $barChart) && in_array($types[1], $barChart)) {
-					array_push($available_graphs, '2');
+				if (in_array($types[0], $coordPlot) && in_array($types[1], $coordPlot)) {
+					array_push($available_graphs, '11');
 				}
 
 			}

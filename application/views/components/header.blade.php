@@ -13,4 +13,5 @@
 	{{ HTML::style('css/bootstrap-responsive.css') }}
 	{{ HTML::script('js/d3.layout.cloud.js')}}
 	{{ HTML::script('js/main.js')}}
+	{{ HTML::script('https://maps.googleapis.com/maps/api/js?key=AIzaSyAisD4YF47Qpu_VBhq9wUb6lbIAH61816Y&sensor=false') }}
 </head>

@@ -392,12 +392,12 @@ Route::post('data/generate', function(){
 		$visu->params = $attr;
 		$visu->save();
 
-		$data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->get(Input::get('selected_attr')));
+		$data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->where('line_type', '=', 'L')->get(Input::get('selected_attr')));
 		$data = $data->content;
 
 		File::put("public_html/json/$vis_id.json", $data);
 
-		$visu->json_path = "public_html/json/$vis_id.json";
+		$visu->json_path = "json/$vis_id.json";
 		$visu->save();
 
 		return Redirect::to('visualisation/edit/'.$vis_id)->with('response', $visu->json_path)->with('saved_attr', $attr);

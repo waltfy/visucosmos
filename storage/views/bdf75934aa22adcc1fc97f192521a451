@@ -13,4 +13,5 @@
 	<?php echo  HTML::style('css/bootstrap-responsive.css') ; ?>
 	<?php echo  HTML::script('js/d3.layout.cloud.js'); ?>
 	<?php echo  HTML::script('js/main.js'); ?>
+	<?php echo  HTML::script('https://maps.googleapis.com/maps/api/js?key=AIzaSyAisD4YF47Qpu_VBhq9wUb6lbIAH61816Y&sensor=false') ; ?>
 </head>

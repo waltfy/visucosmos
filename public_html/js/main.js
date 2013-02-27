@@ -32,17 +32,16 @@ function wordCloud(filename, div) {
 	var header = "";
 	var content = "";
 
-	// $.getJSON("http://localhost/visucosmos-git/"+file, function(data) {
-		$.getJSON("http://visucosmos.info/public_html/"+file, function(data) {
-
+	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		// $.getJSON("http://visucosmos.info/"+file, function(data) {
 		$.each(data, function(key, val) {
 			$.each(val, function(key, val) {
 				// console.log(val);
 				content = content.concat(val.toString() + " ");	
 			});
-		});
+	});
 
-		formatData(content);
+	formatData(content);
 
 	});
 
@@ -126,83 +125,266 @@ function wordCloud(filename, div) {
 	}
 }
 
-function barChart(filename, div) {
+function pieChart(filename, div) {
 
+	var file = filename;
 	var renderAt = makeId(div);
 
-	$.getJSON("http://localhost/visucosmos-git/"+file, function(data) {
-		// $.getJSON("http://www.visucosmos.info/"+file+"&callback=?", function(data) {
+	d3.json("http://localhost/visucosmos-git/public_html/"+file,
+		// d3.json("http://visucosmos.info/"+file,
+		function (jsondata) {
 
-		$.each(data, function(key, val) {
-			$.each(val, function(key, val) {
-				console.log(val);
-				// content = content.concat(val.toString() + " ");	
-			});
+		console.log(jsondata[0]);
+		
+		var attr;
+
+		for(var key in jsondata[0]){
+			attr = key;
+		}
+
+		var data = jsondata.map(function(d) { return d[attr]; });
+
+		console.log(data);
+
+		var width = 241, height = 248, radius = Math.min(width, height) / 2 - 10;
+
+		var color = d3.scale.category20();
+
+		var arc = d3.svg.arc()
+				.outerRadius(radius);
+
+		var pie = d3.layout.pie();
+
+		var svg = d3.select(renderAt).append("svg")
+				.datum(data)
+				.attr("width", width)
+				.attr("height", height)
+			.append("g")
+				.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+		var arcs = svg.selectAll("g.arc")
+				.data(pie)
+			.enter().append("g")
+				.attr("class", "arc");
+
+		arcs.append("path")
+				.attr("fill", function(d, i) { return color(i); })
+			.transition()
+				.ease("bounce")
+				.duration(2000)
+				.attrTween("d", tweenPie)
+			.transition()
+				.ease("elastic")
+				.delay(function(d, i) { return 2000 + i * 50; })
+				.duration(750)
+				.attrTween("d", tweenDonut);
+
+		function tweenPie(b) {
+			b.innerRadius = 0;
+			var i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
+			return function(t) { return arc(i(t)); };
+		}
+
+		function tweenDonut(b) {
+			b.innerRadius = radius * .6;
+			var i = d3.interpolate({innerRadius: 0}, b);
+			return function(t) { return arc(i(t)); };
+		}
+	});
+}
+
+function barChart(filename, div) {
+
+	var file = filename;
+	var renderAt = makeId(div);
+
+	var margin = {top: 20, right: 20, bottom: 30, left: 40},
+		width = 241 - margin.left - margin.right,
+		height = 208 - margin.top - margin.bottom;
+
+	var formatPercent = d3.format(".0%");
+
+	var x = d3.scale.ordinal()
+			.rangeRoundBands([0, width], .1, 1);
+
+	var y = d3.scale.linear()
+			.range([height, 0]);
+
+	var xAxis = d3.svg.axis()
+		.scale(x)
+		.orient("bottom");
+
+	var yAxis = d3.svg.axis()
+		.scale(y)
+		.orient("left")
+		.tickFormat(formatPercent);
+
+	var svg = d3.select(renderAt).append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	d3.json("http://localhost/visucosmos-git/public_html/"+file, function(error, data) {
+
+		var attr;
+
+		for(var key in data[0]){
+			attr = key;
+		}
+
+		data.forEach(function(d) {
+			d[attr] = +d[attr];
 		});
 
-		formatData(content);
+		x.domain(data.map(function(d) { return "d[key]"; }));
+		y.domain([0, d3.max(data, function(d) { return d[attr]; })]);
 
+		svg.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xAxis);
+
+		svg.append("g")
+				.attr("class", "y axis")
+				.call(yAxis)
+			.append("text")
+				.attr("transform", "rotate(-90)")
+				.attr("y", 6)
+				.attr("dy", ".71em")
+				.style("text-anchor", "end")
+				.text("Frequency");
+
+		svg.selectAll(".bar")
+				.data(data[0][attr])
+			.enter().append("rect")
+				.attr("class", "bar")
+				.attr("x", function(d) { return x(d.letter); })
+				.attr("width", x.rangeBand())
+				.attr("y", function(d) { return y(d.frequency); })
+				.attr("height", function(d) { return height - y(d.frequency); });
+
+		d3.select("input").on("change", change);
+
+		var sortTimeout = setTimeout(function() {
+			d3.select("input").property("checked", true).each(change);
+		}, 2000);
+
+		function change() {
+			clearTimeout(sortTimeout);
+
+			// Copy-on-write since tweens are evaluated after a delay.
+			var x0 = x.domain(data.sort(this.checked
+					? function(a, b) { return b.frequency - a.frequency; }
+					: function(a, b) { return d3.ascending(a.letter, b.letter); })
+					.map(function(d) { return d.letter; }))
+					.copy();
+
+			var transition = svg.transition().duration(750),
+					delay = function(d, i) { return i * 50; };
+
+			transition.selectAll(".bar")
+					.delay(delay)
+					.attr("x", function(d) { return x0(d.letter); });
+
+			transition.select(".x.axis")
+					.call(xAxis)
+				.selectAll("g")
+					.delay(delay);
+		}
+	});
+}
+
+function locationPlot(filename, div) {
+
+	var file = filename;
+	
+	var mapOptions = {
+		zoom: 4,
+		// center: myLatlng,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+
+	var map = new google.maps.Map(document.getElementById(div), mapOptions);
+
+	document.getElementById(div).style.width = '241px';
+	document.getElementById(div).style.height = '208px';
+
+	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		// $.getJSON("http://visucosmos.info/"+file, function(data) {
+		$.each(data, function(key, val) {
+			$.each(val, function(key, val) {
+				showAddress(val);
+			});
+		});
 	});
 
-	// var margin = {top: 20, right: 20, bottom: 30, left: 40},
-	// 	width = 960 - margin.left - margin.right,
-	// 	height = 500 - margin.top - margin.bottom;
+	function showAddress(address) {
 
-	// var formatPercent = d3.format(".0%");
+		var geocoder = new google.maps.Geocoder();
 
-	// var x = d3.scale.ordinal()
-	// 		.rangeRoundBands([0, width], .1);
+		geocoder.geocode( { 'address': address }, function(results, status) {
+				
+			if (status == google.maps.GeocoderStatus.OK) {
 
-	// var y = d3.scale.linear()
-	// 		.range([height, 0]);
+				console.log('found', address)
 
-	// var xAxis = d3.svg.axis()
-	// 		.scale(x)
-	// 		.orient("bottom");
+				map.setCenter(results[0].geometry.location, 13);
+				console.log(results[0]);
+				var marker = new google.maps.Marker({
+					position: results[0].geometry.location,
+					map: map,
+					animation: google.maps.Animation.DROP,
+				});
+			}
 
-	// var yAxis = d3.svg.axis()
-	// 		.scale(y)
-	// 		.orient("left")
-	// 		.tickFormat(formatPercent);
+			else {
+				console.log("Unable to find address: " + address);
+			}
+		});
+	}
+}
 
-	// var svg = d3.select("body").append("svg")
-	// 		.attr("width", width + margin.left + margin.right)
-	// 		.attr("height", height + margin.top + margin.bottom)
-	// 	.append("g")
-	// 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+function coordPlot(filename, div) {
 
-	// d3.tsv("data.tsv", function(error, data) {
+	var file = filename;
+	
+	var mapOptions = {
+		zoom: 4,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
 
-	// 	data.forEach(function(d) {
-	// 		d.frequency = +d.frequency;
-	// 	});
+	var map = new google.maps.Map(document.getElementById(div), mapOptions);
 
-	// 	x.domain(data.map(function(d) { return d.letter; }));
-	// 	y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+	document.getElementById(div).style.width = '241px';
+	document.getElementById(div).style.height = '208px';
 
-	// 	svg.append("g")
-	// 			.attr("class", "x axis")
-	// 			.attr("transform", "translate(0," + height + ")")
-	// 			.call(xAxis);
 
-	// 	svg.append("g")
-	// 			.attr("class", "y axis")
-	// 			.call(yAxis)
-	// 		.append("text")
-	// 			.attr("transform", "rotate(-90)")
-	// 			.attr("y", 6)
-	// 			.attr("dy", ".71em")
-	// 			.style("text-anchor", "end")
-	// 			.text("Frequency");
+	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		// $.getJSON("http://visucosmos.info/"+file, function(data) {
+			var lat, lon;
 
-	// 	svg.selectAll(".bar")
-	// 			.data(data)
-	// 		.enter().append("rect")
-	// 			.attr("class", "bar")
-	// 			.attr("x", function(d) { return x(d.letter); })
-	// 			.attr("width", x.rangeBand())
-	// 			.attr("y", function(d) { return y(d.frequency); })
-	// 			.attr("height", function(d) { return height - y(d.frequency); });
+		$.each(data, function(key, val) {
+			// $.each(val, function(key, val) {
+				console.log('in');
+				console.log(key, data[0]);
 
-	// });
+				$.each(val, function(key, d){
+					console.log(key);
+					console.log(val['attr6'] + ", " + val['attr7']);	
+				});
+				
+
+				marker = new google.maps.Marker({
+					position: google.maps.LatLng(val, val),
+					map: map,
+					animation: google.maps.Animation.DROP,
+				});
+
+			// });
+		});
+	});
+
+
+
 }

@@ -12,6 +12,12 @@
 			</ul>
 		</div>
 	@endif
+	@if ($graphs == null)
+		<div class='alert alert-error'>
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<p>No visualisations available for the selected attributes.</p>
+		</div>
+	@endif
 	<h2>
 		{{ $details->name }}<small> @ {{ $dataset->name }}</small>
 		@if ($details->json_path != null)

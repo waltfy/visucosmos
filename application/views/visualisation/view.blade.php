@@ -21,7 +21,7 @@
 	<script>
 
 		var n = 1, // number of layers
-			m = 2, // number of samples per layer
+			m = 30, // number of samples per layer
 			stack = d3.layout.stack(),
 			layers = stack(d3.range(n).map(function() { return bumpLayer(m, .1); })),
 			yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
