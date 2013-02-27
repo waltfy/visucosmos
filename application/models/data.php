@@ -84,11 +84,83 @@
         }      
         
       }
-      
-      
+       
       return $DS_id;
 		
 	  }
+	  
+	  public static function labelRow($Input,$Label){
+	    
+	    foreach(Input::get('rows') as $row){
+	                
+	        $SomeData = Data::find($row);
+	        $return = $row;
+	        $SomeData->line_type =$Label;
+	        $SomeData->save();
+	    }	
+	    	  
+	  }
+	  
+	  public static function generateType($DS_id){
+	  
+	      $data = Data::where('data_set_id','=',$DS_id)->first();
+	      $newRow = new Data;
+	      	      
+	      $R_id = $newRow->insert_get_id(array('attr1' => Data::detectType($data->get('attr1')), 'data_set_id' => $DS_id, 'line_type' => 'T'));
+	      
+	      for($l = 1; $l < count($data); $l++){
+          
+          $newRow
+          ->where_in('id', array($R_id))
+          ->update(array('attr'.$l => Data::detectType($data->get('attr'.l))));
+        
+        }
+        
+        $newRow->save();      
+	  
+	  
+	  }
+	  
+	  public static function detectType($value){
+	  
+	  //If structure based on type
+	    
+	    if(gettype($value) == 'string'){
+	      
+	      $type = 'string';
+	      
+	      //$types = Data::semanticTest($value, 'Geo');
+	      
+	      //$types = Data::semanticTest($value, 'Time');	
+	      
+	      return $type;      
+	      
+	    }
+	    else if(gettype($value) == 'double' or gettype($value) == 'integer'){
+	
+	      $type = 'float';  
+	      
+	      return $type;
+	  
+	    }
+	    else{
+	      $type = gettype($value) ;
+	      
+	      return $type;
+	    }
+	    
+	  }
+	  
+	  public static function semanticTest($value, $type){
+	  
+	    return false;
+	  
+	  }
+	  
+	  
+	  
+	  
+	  
 	}
 
 ?>

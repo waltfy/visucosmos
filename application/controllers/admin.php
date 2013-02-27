@@ -36,10 +36,43 @@
 		
 		function action_storedata(){
 	    
+	    //Action
 	    $Input = Input::all();
 	    $DS_id = Data::saveToDatabase($Input);
+	    
+	    //Data for views
+	    $Data = Data::where('data_set_id', '=', $DS_id)->get();
+	    
 		  return View::make('settings.dataSet')
-		    ->with('DS_id',$DS_id);
+		    ->with('Datas',$Data)
+		    ->with('Input', $Input);
+		}
+		
+		function action_markdata(){
+			
+			//Action
+			$Input = Input::all();
+			Data::labelRow($Input, 'H');
+			
+			
+			//Data for view
+			$Rows = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','L')->get();
+			$Headers = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','H')->get();
+
+			return View::make('settings.dataLabel')
+			->with('Rows', $Rows)
+			->with('Headers',$Headers);
+
+		}
+		
+		function action_detecttype(){
+		  //Action
+		  $Input = Input::all();
+
+		  Data::generateType($Input['DS_id']);
+		
+		  //Data for view
+		
 		}
 
 	}

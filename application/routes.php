@@ -278,6 +278,10 @@ Route::post('admin/register', function() {
 
 Route::post('settings/add_data', 'admin@storedata');
 
+Route::post('settings/mark_data', 'admin@markdata');
+
+Route::post('settings/detect_type', 'admin@detecttype');
+
 Route::post('visualisation/new', function(){
 
 	$input = Input::all();

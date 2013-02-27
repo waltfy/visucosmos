@@ -2,22 +2,44 @@
 <? $pagetitle = 'Settings'; ?>
 
 @section('content')
-	<h2>New Data Set</h2>
-	<h3>Title</h3>
-	<small>{{$Input['name']}}</small>
-	<h3>Description</h3>
-	<small>{{$Input['description']}}</small>
-	
-	<h3>File Contents</h3>
-	<small><i>Please select rows to be marked as a 'Header'.</i></small>
-	<br>
-	
-	{{Form::open('settings/mark_data', 'POST', array('class' => 'form-horizontal'))}}
+	<h2></h2>
+	{{Form::open('settings/detect_type', 'POST', array('class' => 'form-horizontal'))}}
 	<small>
+	
 	<table>
-	@foreach ($Datas as $Data)
+	@foreach ($Headers as $Data)
 	<tr>
-	  <td>{{Form::checkbox('rows[]',$Data->id)}} </td>
+	  <th>{{$Data->attr1}}</th>
+	  <th></th>
+	  <th>{{$Data->attr2}}</th>
+	  <th></th>
+	  <th>{{$Data->attr3}}</th>
+	  <th></th>
+	  <th>{{$Data->attr4}}</th>
+	  <th></th>
+	  <th>{{$Data->attr5}}</th>
+	  <th></th>
+	  <th>{{$Data->attr6}}</th>
+	  <th></th>
+	  <th>{{$Data->attr7}}</th>
+	  <th></th>
+	  <th>{{$Data->attr8}}</th>
+	  <th></th>
+	  <th>{{$Data->attr9}}</th>
+	  <th></th>
+	  <th>{{$Data->attr10}}</th>
+	  <th></th>
+	  <th>{{$Data->attr11}}</th>
+	  <th></th>
+	  <th>{{$Data->attr12}}</th>
+	  <th></th>
+	  <th>{{$Data->attr13}}</th>
+	</tr>
+	@endforeach
+	
+	
+	@foreach ($Rows as $Data)
+	<tr>
 	  <td>{{$Data->attr1}}</td>
 	  <td></td>
 	  <td>{{$Data->attr2}}</td>
@@ -51,7 +73,5 @@
 	</br>
 	{{ Form::button('Update', array('class' => 'btn btn-success' )) }}
 	{{Form::close()}}
-	  
-	
-	<br>
+
 @endsection
