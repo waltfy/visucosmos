@@ -21,6 +21,7 @@
 			$wordCloud = explode(', ', Graphs::where('id', '=', '3')->only('type'));
 			$locationPlot = explode(', ', Graphs::where('id', '=', '10')->only('type'));
 			$coordPlot = explode(', ', Graphs::where('id', '=', '11')->only('type'));
+			$bubbleChart = explode(', ', Graphs::where('id', '=', '12')->only('type'));
 
 			// echo "<pre>";
 			// print_r($barChart);
@@ -49,6 +50,10 @@
 
 				if (in_array($types[0], $locationPlot)) {
 					array_push($available_graphs, '10');
+				}
+
+				if (in_array($types[0], $bubbleChart)) {
+					array_push($available_graphs, '12');
 				}
 
 			}

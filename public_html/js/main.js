@@ -388,3 +388,126 @@ function coordPlot(filename, div) {
 
 
 }
+function bubbleChart(filename, div) {
+	console.log("this is being called");
+	var renderAt = makeId(div);
+	var file = filename;
+	var header = "";
+	var content = "";
+
+	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		//$.getJSON("http://visucosmos.info/"+file, function(data) {
+		$.each(data, function(key, val) {
+			$.each(val, function(key, val) {
+				console.log(val);
+				content = content.concat(val.toString() + " ");	
+			});
+	});
+
+	formatData(content);
+
+	});
+
+	
+	function formatData(text)	{
+		console.log("format being called");
+		var data = text; 
+		var dataarray = data.split(" ");
+		var unique = [];
+		
+		$.each(dataarray, function(i, el){
+			if($.inArray(el, unique) === -1) 
+				unique.push(el);
+		});
+
+
+		window.setTimeout(createGraph(dataarray, unique), 50);
+	}
+
+	function createGraph(dataarray, unique)	{
+		console.log("create graph being called");
+		var datavalues = dataarray;
+		var uniquevalues = unique;
+		var counts = []; 
+		
+
+		for (var z = 0; z < uniquevalues.length; z++)	{
+			counts[z] = 0; 
+		}
+
+
+		for(var i  = 0; i < datavalues.length; i++)	{
+			for (var j = 0; j < uniquevalues.length; j++)	{
+				if (datavalues[i] == uniquevalues[j]) {
+					 counts[j]++;
+				}
+			}
+		}
+
+		uniquevalues.shift();
+		counts.shift();
+
+		createVis(uniquevalues, counts);
+
+	}
+	
+	function createVis(uniquevalues, counts){
+			console.log("create vis being called");
+			var unique = uniquevalues;
+			var count = counts; 
+			var myjson = '[';
+
+			for (var i = 0; i < unique.length; i++)
+			{
+				var uniquepart = '{"name":"' + unique[i] + '"';
+				myjson += uniquepart; 
+				var sizepart = ', "value":';
+				myjson += sizepart;
+				var countpart = count[i] + '';
+				myjson += countpart;
+				if (i == unique.length-1) {
+					var notending = "}";
+					myjson += notending;}
+				else{
+					var ending = "},";
+					myjson += ending;}
+			} 
+
+			myjson += "]";
+
+			console.log(myjson);
+
+			var json = JSON.parse(myjson);
+
+			var r = 248
+			var bubble_layout = d3.layout.pack()
+			    .sort(null) // HERE
+			    .size([r,r])
+			    .padding(1.5);
+
+			var vis = d3.select(renderAt).append("svg")
+			    .attr("width" , r)
+			    .attr("height", r)
+
+			var selection = vis.selectAll("g.node")
+			              .data(bubble_layout.nodes({children: json}).filter(function(d) { return !d.children; }) ); 
+
+			//Enter
+			//HERE
+			var node = selection.enter().append("g")
+			              .attr("class", "node")
+			              .attr("transform", function(d) { return "translate(" + d.x + ", " + d.y + ")"; }).filter(function(d){
+			      return d.value > 0;
+			    })  // HERE
+			    
+			node.append("circle")
+			    .attr("r", function(d) { return d.r; })
+			    .style("fill", function(d) { return 'aaaaaa'; });
+
+			node.append("text")
+			    .attr("text-anchor", "middle")
+			    .attr("dy", ".3em")
+			    .text(function(d) { return d.name; });
+	}
+
+}
