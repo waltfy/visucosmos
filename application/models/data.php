@@ -21,6 +21,7 @@
 			$wordCloud = explode(', ', Graphs::where('id', '=', '3')->only('type'));
 			$locationPlot = explode(', ', Graphs::where('id', '=', '10')->only('type'));
 			$coordPlot = explode(', ', Graphs::where('id', '=', '11')->only('type'));
+			$bubbleChart = explode(', ', Graphs::where('id', '=', '12')->only('type'));
 
 			// echo "<pre>";
 			// print_r($barChart);
@@ -49,6 +50,10 @@
 
 				if (in_array($types[0], $locationPlot)) {
 					array_push($available_graphs, '10');
+				}
+
+				if (in_array($types[0], $bubbleChart)) {
+					array_push($available_graphs, '12');
 				}
 
 			}
@@ -102,60 +107,130 @@
 	  
 	  public static function labelRow($Input,$Label){
 	    
-	    foreach(Input::get('rows') as $row){
+	    if(Input::get('rows') != null){
+	      foreach(Input::get('rows') as $row){
 	                
 	        $SomeData = Data::find($row);
 	        $return = $row;
 	        $SomeData->line_type =$Label;
 	        $SomeData->save();
-	    }	
+	     }
+	    }
 	    	  
 	  }
 	  
 	  public static function generateType($DS_id){
 	  
-	      $data = Data::where('data_set_id','=',$DS_id)->first();
-	      $newRow = new Data;
+	    $data = Data::where('data_set_id','=',$DS_id)->where('line_type','=','L')->first();
+	    
+	    $newRow = new Data;
+	    
+	    $value = $data->attr1;
+	    $type = Data::detectType($value);
 	      	      
-	      $R_id = $newRow->insert_get_id(array('attr1' => Data::detectType($data->get('attr1')), 'data_set_id' => $DS_id, 'line_type' => 'T'));
-	      
-	      for($l = 1; $l < count($data); $l++){
-          
-          $newRow
-          ->where_in('id', array($R_id))
-          ->update(array('attr'.$l => Data::detectType($data->get('attr'.l))));
+	    $R_id = $newRow->insert_get_id(array('attr1' => $type, 'data_set_id' => $DS_id, 'line_type' => 'T'));
+	    
+      $value = $data->attr2;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr2' => $type));
+      
+      $value = $data->attr3;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr3' => $type));
+      
+      $value = $data->attr4;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr4' => $type));
+      
+      $value = $data->attr5;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr5' => $type));
+      
+      $value = $data->attr6;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr6' => $type));
+      
+      $value = $data->attr7;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr7' => $type));
+      
+      $value = $data->attr8;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr8' => $type));
+      
+      $value = $data->attr9;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr9' => $type));
+      
+      $value = $data->attr10;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr10' => $type));
+      
+      $value = $data->attr11;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr11' => $type));
+      
+      $value = $data->attr12;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr12' => $type));
+      
+      $value = $data->attr13;
+      $type = Data::detectType($value);
+      $newRow
+      ->where('id','=',$R_id)
+      ->update(array('attr13' => $type));
         
-        }
         
-        $newRow->save();      
-	  
-	  
+        
+        
+         
 	  }
 	  
 	  public static function detectType($value){
 	  
 	  //If structure based on type
 	    
-	    if(gettype($value) == 'string'){
-	      
-	      $type = 'string';
-	      
-	      //$types = Data::semanticTest($value, 'Geo');
-	      
-	      //$types = Data::semanticTest($value, 'Time');	
-	      
-	      return $type;      
-	      
-	    }
-	    else if(gettype($value) == 'double' or gettype($value) == 'integer'){
+
+	    if(is_numeric($value)){
 	
-	      $type = 'float';  
+	      $type = 'num';  
 	      
 	      return $type;
 	  
-	    }
-	    else{
+	    }else{
+	      
 	      $type = gettype($value) ;
+	      
+        //$types = Data::semanticTest($value, 'Geo');
+	      
+	      //$types = Data::semanticTest($value, 'Time');
+	      
+	      if($type == NULL){
+	        $type =' ';
+	      }
+	      
 	      
 	      return $type;
 	    }
