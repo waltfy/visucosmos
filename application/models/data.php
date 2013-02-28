@@ -215,7 +215,7 @@
 
 	    if(is_numeric($value)){
 	
-	      $type = 'num';  
+	      $type = 'float';  
 	      
 	      return $type;
 	  
