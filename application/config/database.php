@@ -69,10 +69,10 @@ return array(
 
 		'mysql' => array(
 			'driver'   => 'mysql',
-			'host'     => 'localhost',
+			'host'     => '127.0.0.1',
 			'database' => 'group11',
-			'username' => 'root',
-			'password' => 'root',
+			'username' => 'group11',
+			'password' => 'duTuyzvVJ8Q0l9zb',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 		),
@@ -91,7 +91,7 @@ return array(
 			'driver'   => 'sqlsrv',
 			'host'     => 'localhost',
 			'database' => 'database',
-			'username' => 'root',
+			'username' => '',
 			'password' => '',
 			'prefix'   => '',
 		),
