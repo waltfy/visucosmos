@@ -121,7 +121,7 @@
 	  
 	  public static function generateType($DS_id){
 	  
-	    $data = Data::where('data_set_id','=',$DS_id)->first();
+	    $data = Data::where('data_set_id','=',$DS_id)->where('line_type','=','L')->first();
 	    
 	    $newRow = new Data;
 	    

@@ -282,6 +282,11 @@ Route::post('settings/mark_data', 'admin@markdata');
 
 Route::post('settings/detect_type', 'admin@detecttype');
 
+Route::post('settings/data_finish', function()
+{
+	return View::make('settings.admin');
+});
+
 Route::post('visualisation/new', function(){
 
 	$input = Input::all();

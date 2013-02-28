@@ -1,6 +1,6 @@
 
 #Adding to avoid unecessay commits
-*.DS_Store
+.DS_Store
 
 #Modified so can work locally, don't want to commit
-application/config/database.php
+database.php
