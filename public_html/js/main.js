@@ -32,8 +32,8 @@ function wordCloud(filename, div) {
 	var header = "";
 	var content = "";
 
-	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
-		// $.getJSON("http://visucosmos.info/"+file, function(data) {
+	// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		$.getJSON("http://visucosmos.info/"+file, function(data) {
 		$.each(data, function(key, val) {
 			$.each(val, function(key, val) {
 				// console.log(val);
@@ -130,8 +130,8 @@ function pieChart(filename, div) {
 	var file = filename;
 	var renderAt = makeId(div);
 
-	d3.json("http://localhost/visucosmos-git/public_html/"+file,
-		// d3.json("http://visucosmos.info/"+file,
+	// d3.json("http://localhost/visucosmos-git/public_html/"+file,
+		d3.json("http://visucosmos.info/"+file,
 		function (jsondata) {
 
 		console.log(jsondata[0]);
@@ -310,8 +310,8 @@ function locationPlot(filename, div) {
 	document.getElementById(div).style.width = '241px';
 	document.getElementById(div).style.height = '208px';
 
-	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
-		// $.getJSON("http://visucosmos.info/"+file, function(data) {
+	// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		$.getJSON("http://visucosmos.info/"+file, function(data) {
 		$.each(data, function(key, val) {
 			$.each(val, function(key, val) {
 				showAddress(val);
@@ -360,8 +360,8 @@ function coordPlot(filename, div) {
 	document.getElementById(div).style.height = '208px';
 
 
-	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
-		// $.getJSON("http://visucosmos.info/"+file, function(data) {
+	// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		$.getJSON("http://visucosmos.info/"+file, function(data) {
 			var lat, lon;
 
 		$.each(data, function(key, val) {
