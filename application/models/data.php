@@ -63,6 +63,9 @@
 				if (in_array($types[0], $coordPlot) && in_array($types[1], $coordPlot)) {
 					array_push($available_graphs, '11');
 				}
+				if (in_array($types[0], $barChart) && in_array($types[1], $barChart)) {
+					array_push($available_graphs, '2');
+				}
 
 			}
 
