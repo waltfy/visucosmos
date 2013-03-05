@@ -52,5 +52,25 @@ $pdf->write(13, $text);
 // Close the document and save to the filesystem with the name simple.pdf
 $filename = $idFile . '.pdf';
 $pdf->Output($filename,'F');
+
+testCase($filename); 
+
+	function testCase($filename)
+	{
+		$longfilename = $filename; 
+		echo "this is being called";
+		if (file_exists ($longfilename) == true)
+		{
+			echo $longfilename;
+			echo "File produced correctly";
+			$worked = true; 
+		}
+		else
+		{
+			echo $longfilename;
+			echo "File not produced correctly";
+			$worked = false;
+		}
+	}
 }
 ?>
