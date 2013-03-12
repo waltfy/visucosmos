@@ -1,0 +1,77 @@
+<? $pagetitle = 'Settings'; ?>
+
+<?php \Laravel\Section::start('content'); ?>
+	<h2></h2>
+	<?php echo Form::open('settings/detect_type', 'POST', array('class' => 'form-horizontal')); ?>
+	<small>
+	
+	<table>
+	<?php foreach($Headers as $Data): ?>
+	<tr>
+	  <th><?php echo $Data->attr1; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr2; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr3; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr4; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr5; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr6; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr7; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr8; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr9; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr10; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr11; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr12; ?></th>
+	  <th></th>
+	  <th><?php echo $Data->attr13; ?></th>
+	</tr>
+	<?php endforeach; ?>
+	
+	
+	<?php foreach($Rows as $Data): ?>
+	<tr>
+	  <td><?php echo $Data->attr1; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr2; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr3; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr4; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr5; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr6; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr7; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr8; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr9; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr10; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr11; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr12; ?></td>
+	  <td></td>
+	  <td><?php echo $Data->attr13; ?></td>
+	</tr>
+	<?php echo  Form::hidden('DS_id', $Data->data_set_id ) ; ?>
+	<?php endforeach; ?>
+	</table>
+	</small>
+	</br>
+	<?php echo  Form::button('Update', array('class' => 'btn btn-success' )) ; ?>
+	<?php echo Form::close(); ?>
+
+<?php \Laravel\Section::stop(); ?>
+<?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>
