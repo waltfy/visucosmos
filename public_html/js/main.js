@@ -191,6 +191,7 @@ function pieChart(filename, div, width, height) {
 	});
 }
 
+<<<<<<< HEAD
 function barChart(filename, div, width, height) {
 
 	var file = filename;
@@ -294,6 +295,69 @@ function barChart(filename, div, width, height) {
 }
 
 function locationPlot(filename, div, width, height) {
+=======
+function barChart(filename, div) {
+	var file = filename;
+	var renderAt = makeId(div);
+
+    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        width = 240 - margin.left - margin.right,
+        height = 208 - margin.top - margin.bottom;
+
+    var formatPercent = d3.format(".0");
+
+    var x = d3.scale.ordinal()
+        .rangeRoundBands([0, width], .1, 1);
+
+    var y = d3.scale.linear()
+        .range([height, 0]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .tickFormat(formatPercent);
+
+    var svg = d3.select(renderAt).append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+   	d3.json("http://localhost/visucosmos-git/public_html/"+file, function(data) { 
+	      x.domain(data.map(function(d) { return d.attr3; }));
+	      y.domain([0, d3.max(data, function(d) { return d.attr4; })]);
+
+	      svg.append("g")
+	          .attr("class", "x axis")
+	          .attr("transform", "translate(0," + height + ")")
+	          .call(xAxis);
+
+	      svg.append("g")
+	          .attr("class", "y axis")
+	          .call(yAxis)
+	        .append("text")
+	          .attr("transform", "rotate(-90)")
+	          .attr("y", 6)
+	          .attr("dy", ".71em")
+	          .style("text-anchor", "end")
+	          .text("Integer");
+
+	      svg.selectAll(".bar")
+	          .data(data)
+	        .enter().append("rect")
+	          .attr("class", "bar")
+	          .attr("x", function(d) { return x(d.attr3); })
+	          .attr("width", x.rangeBand())
+	          .attr("y", function(d) { return y(d.attr4); })
+	          .attr("height", function(d) { return height - y(d.attr4); });
+	});
+}
+function locationPlot(filename, div) {
+>>>>>>> 7278ac319469573199c19ade5f1cbcf3479f757b
 
 	var file = filename;
 	
@@ -521,4 +585,70 @@ function bubbleChart(filename, div, width, height) {
 					.text(function(d) { return d.name; });
 	}
 
+}
+function heatMap(filename, div) {
+
+	var file = filename;
+	var renderAt = makeId(div);
+	var div = div; 
+
+    var myLatlng = new google.maps.LatLng(51.517, 0.1062);
+    // define map properties
+    var myOptions = {
+      zoom: 8,
+      center: myLatlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: false,
+      scrollwheel: true,
+      draggable: true,
+      navigationControl: true,
+      mapTypeControl: false,
+      scaleControl: true,
+      disableDoubleClickZoom: false
+    };
+    // we'll use the heatmapArea 
+    var map = new google.maps.Map($(renderAt)[0], myOptions);
+    
+    // let's create a heatmap-overlay
+    // with heatmap config properties
+    var heatmap = new HeatmapOverlay(map, {
+        "radius":20,
+        "visible":true, 
+        "opacity":60
+    });
+ 
+    // here is our dataset
+    // important: a datapoint now contains lat, lng and count property!
+    
+    var testData = getData(file); 
+
+ 
+    // now we can set the data
+    google.maps.event.addListenerOnce(map, "idle", function(){
+        // this is important, because if you set the data set too early, the latlng/pixel projection doesn't work
+        heatmap.setDataSet(testData);
+    });
+ 
+ 	function getData(file)
+ 	{
+ 		var topJsonArray = {
+			max: 46,
+			data: []};
+
+		$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		// $.getJSON("http://visucosmos.info/"+file, function(data) {
+			$.each(data, function(key, val) {
+				// $.each(val, function(key, val) {
+				if(val['attr6'] != "-"){
+					topJsonArray.data.push({lat : val['attr6'], lng: val['attr7'], count: 46});
+				}	
+				// });
+			});
+ 		});
+
+ 		console.log(topJsonArray);
+ 		return topJsonArray; 
+
+ 		
+ 	}
 }

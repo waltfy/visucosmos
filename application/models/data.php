@@ -22,6 +22,7 @@
 			$locationPlot = explode(', ', Graphs::where('id', '=', '10')->only('type'));
 			$coordPlot = explode(', ', Graphs::where('id', '=', '11')->only('type'));
 			$bubbleChart = explode(', ', Graphs::where('id', '=', '12')->only('type'));
+			$heatMap = explode(', ', Graphs::where('id', '=', '13')->only('type'));
 
 			// echo "<pre>";
 			// print_r($barChart);
@@ -55,13 +56,20 @@
 				if (in_array($types[0], $bubbleChart)) {
 					array_push($available_graphs, '12');
 				}
-
 			}
 
 			if ($dimension == 2) {
 
 				if (in_array($types[0], $coordPlot) && in_array($types[1], $coordPlot)) {
 					array_push($available_graphs, '11');
+				}
+				
+				if (in_array($types[0], $barChart) && in_array($types[1], $barChart)) {
+					array_push($available_graphs, '2');
+				}
+
+				if (in_array($types[0], $heatMap)) {
+					array_push($available_graphs, '13');
 				}
 
 			}
