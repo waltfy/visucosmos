@@ -2,6 +2,12 @@
 <? $pagetitle = 'Add Privilege'; ?>
 
 @section('content')
+	@if (Session::has('no_vis'))
+		<div class="alert alert-error">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<p>No visualisations available for retrieval.</p>
+		</div>
+	@endif
 	@if (Session::has('success'))
 		<div class="alert alert-success">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -19,7 +25,7 @@
 		</div>
 	@endif
 	<h2>Retrieve Visualisation</h2>
-	<small>Retreive a deleted visualisation.</small>
+	<small>Retrieve a deleted visualisation.</small>
 	{{ Form::open('settings/getback', '', array('class' => 'form-horizontal')) }}
 	<p>
 	{{ Form::label('username', "Enter user's student number.") }}
@@ -29,6 +35,7 @@
 	{{ Form::close() }}
 	<br>
 	@if (Session::has('retrieved'))
+		<?php $retrieved =  Session::get('retrieved'); ?>
 		<table class="table table-hover">
 			<thead>
 			<tr>
@@ -39,7 +46,7 @@
 			</tr>
 			</thead>
 			<tbody>
-				@foreach (Session::get('retrieved') as $data)
+				@foreach ($retrieved as $data)
 					<tr>
 						<td>{{ $data->id }}</td>
 						<td>{{ $data->name }}</td>

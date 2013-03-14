@@ -12,7 +12,7 @@
 			</ul>
 		</div>
 	@endif
-	@if ($graphs == null)
+	@if ( Session::get('no_graphs') == true )
 		<div class='alert alert-error'>
 			<button type="button" class="close" data-dismiss="alert">&times;</button>
 			<p>No visualisations available for the selected attributes.</p>
@@ -64,7 +64,7 @@
 		<div class='col span12'>
 			@foreach ($graphs as $render)
 				<div class='col span4' id='render{{$i}}' graphId='{{ $render->id }}'>
-						<? echo "<script type='text/javascript'>".$render->attributes['function']."('$response', 'render$i');</script>"; ?>
+						<? echo "<script type='text/javascript'>".$render->attributes['function']."('$response', 'render$i', 241, 208);</script>"; ?>
 				</div>
 				<? $i++; ?>
 			@endforeach

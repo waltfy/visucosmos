@@ -24,13 +24,13 @@
 		</div>
 	<?php endif; ?>
 	<h2>Add Data Set</h2>
-	<?php echo  Form::open('settings/add_admin', '', array('class' => 'form-horizontal')) ; ?>
+	<?php echo  Form::open_for_files('settings/add_data', 'POST', array('class' => 'form-horizontal')) ; ?>
 	<p>
 	<?php echo  Form::label('name', "Enter a data set name.") ; ?>
 	<?php echo  Form::text('name', '', array('placeholder' => 'Twitter Data')); ?>
 	</p>
 	<p>
-	<?php echo  Form::label('description', "Enter a data set name.") ; ?>
+	<?php echo  Form::label('description', "Enter a data set description.") ; ?>
 	<?php echo  Form::textarea('description', '', array('placeholder' => 'Twitter Data', 'rows' => '3')); ?>
 	</p>
 	<p>

@@ -118,13 +118,14 @@ Route::post('settings/add_admin', function () {
 	$input = Input::all();
 
 	$rules = array(
-		'username' => 'required|different:current_user'
+		'username' => 'exists:users|required|different:current_user'
 	);
 
 	$messages	= array(
 
 		'username_required' => 'You must enter a student number to be given admin privileges.',
-		'username_different' => 'You cannnot change your own admin privileges.'
+		'username_different' => 'You cannnot change your own admin privileges.',
+		'username_exists' => 'This user does not exist, try again.'
 
 	);
 
@@ -149,13 +150,14 @@ Route::post('settings/rm_admin', function () {
 	$input = Input::all();
 
 	$rules = array(
-		'username' => 'required|different:current_user'
+		'username' => 'exists:users|required|different:current_user'
 	);
 
 	$messages	= array(
 
 		'username_required' => 'You must enter a student number to remove admin privileges.',
-		'username_different' => 'You cannnot change your own admin privileges.'
+		'username_different' => 'You cannnot change your own admin privileges.',
+		'username_exists' => 'This user does not exist, try again.'
 
 	);
 
@@ -324,12 +326,13 @@ Route::post('settings/getback', function() {
 	$input = Input::all();
 
 	$rules = array(
-		'username' => 'required'
+		'username' => 'required|exists:users'
 	);
 
 	$messages	= array(
 
 		'username_required' => 'You must enter a student number to retrieve a visualisation.',
+		'username_exists' => 'This user does not exist, try again.'
 
 	);
 
@@ -344,6 +347,10 @@ Route::post('settings/getback', function() {
 		$user = User::where('username', '=', Input::get('username'))->first();
 
 		$retrieved = User::find($user->id)->visualisation()->where('is_active', '=', 'N')->get();
+
+		if ($retrieved == null) {
+			return Redirect::to('admin/retrieve')->with('no_vis', true);			
+		}
 
 		return Redirect::to('admin/retrieve')->with('retrieved', $retrieved);
 	}
@@ -391,8 +398,8 @@ Route::post('data/generate', function(){
 		$dimension = count($data_types->attributes);
 
 		$available_graphs = Data::validateType($types);
-
 		$available_graphs = serialize($available_graphs);
+		$graphs = unserialize($available_graphs);
 		$visu->available_graphs = $available_graphs;
 		$visu->dimension = $dimension;
 		$visu->save();
@@ -409,7 +416,14 @@ Route::post('data/generate', function(){
 		$visu->json_path = "json/$vis_id.json";
 		$visu->save();
 
-		return Redirect::to('visualisation/edit/'.$vis_id)->with('response', $visu->json_path)->with('saved_attr', $attr);
+		if ($graphs != null) {
+			return Redirect::to('visualisation/edit/'.$vis_id)->with('response', $visu->json_path)->with('saved_attr', $attr);
+		}
+
+		else {
+			return Redirect::to('visualisation/edit/'.$vis_id)->with('response', $visu->json_path)->with('saved_attr', $attr)->with('no_graphs', true);
+		}
+
 	}
 
 });

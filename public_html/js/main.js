@@ -24,7 +24,7 @@ function makeId(divname) {
 	return "#"+divname;
 }
 
-function wordCloud(filename, div) {
+function wordCloud(filename, div, width, height) {
 
 	var renderAt = makeId(div);
 
@@ -32,8 +32,8 @@ function wordCloud(filename, div) {
 	var header = "";
 	var content = "";
 
-	// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
-		$.getJSON("http://visucosmos.info/"+file, function(data) {
+	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		// $.getJSON("http://visucosmos.info/"+file, function(data) {
 		$.each(data, function(key, val) {
 			$.each(val, function(key, val) {
 				// console.log(val);
@@ -89,8 +89,6 @@ function wordCloud(filename, div) {
 		// console.log(counts);
 
 		var fill = d3.scale.category20();
-		var width = 241;
-		var height = 208;
 
 			d3.layout.cloud().size([width, height])
 				.words(d3.zip(uniquevalues, counts).map(function(d) {
@@ -125,13 +123,13 @@ function wordCloud(filename, div) {
 	}
 }
 
-function pieChart(filename, div) {
+function pieChart(filename, div, width, height) {
 
 	var file = filename;
 	var renderAt = makeId(div);
 
-	// d3.json("http://localhost/visucosmos-git/public_html/"+file,
-		d3.json("http://visucosmos.info/"+file,
+	d3.json("http://localhost/visucosmos-git/public_html/"+file,
+		// d3.json("http://visucosmos.info/"+file,
 		function (jsondata) {
 
 		console.log(jsondata[0]);
@@ -146,7 +144,7 @@ function pieChart(filename, div) {
 
 		console.log(data);
 
-		var width = 241, height = 248, radius = Math.min(width, height) / 2 - 10;
+		radius = Math.min(width, height) / 2 - 10;
 
 		var color = d3.scale.category20();
 
@@ -193,14 +191,14 @@ function pieChart(filename, div) {
 	});
 }
 
-function barChart(filename, div) {
+function barChart(filename, div, width, height) {
 
 	var file = filename;
 	var renderAt = makeId(div);
 
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
-		width = 241 - margin.left - margin.right,
-		height = 208 - margin.top - margin.bottom;
+		width = width - margin.left - margin.right,
+		height = height - margin.top - margin.bottom;
 
 	var formatPercent = d3.format(".0%");
 
@@ -226,7 +224,7 @@ function barChart(filename, div) {
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	d3.json("http://localhost/visucosmos-git/public_html/"+file, function(error, data) {
-
+	// d3.json("http://visucosmos.info/"+file, function(error, data) {	
 		var attr;
 
 		for(var key in data[0]){
@@ -295,7 +293,7 @@ function barChart(filename, div) {
 	});
 }
 
-function locationPlot(filename, div) {
+function locationPlot(filename, div, width, height) {
 
 	var file = filename;
 	
@@ -307,11 +305,14 @@ function locationPlot(filename, div) {
 
 	var map = new google.maps.Map(document.getElementById(div), mapOptions);
 
-	document.getElementById(div).style.width = '241px';
-	document.getElementById(div).style.height = '208px';
+	var stringWidth = width + "px";
+	var stringHeight = height + "px";
 
-	// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
-		$.getJSON("http://visucosmos.info/"+file, function(data) {
+	document.getElementById(div).style.width = stringWidth;
+	document.getElementById(div).style.height = stringHeight;
+
+	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		// $.getJSON("http://visucosmos.info/"+file, function(data) {
 		$.each(data, function(key, val) {
 			$.each(val, function(key, val) {
 				showAddress(val);
@@ -345,7 +346,7 @@ function locationPlot(filename, div) {
 	}
 }
 
-function coordPlot(filename, div) {
+function coordPlot(filename, div, width, height) {
 
 	var file = filename;
 	
@@ -356,40 +357,48 @@ function coordPlot(filename, div) {
 
 	var map = new google.maps.Map(document.getElementById(div), mapOptions);
 
-	document.getElementById(div).style.width = '241px';
-	document.getElementById(div).style.height = '208px';
+	var stringWidth = width + "px";
+	var stringHeight = height + "px";
 
+	document.getElementById(div).style.width = stringWidth;
+	document.getElementById(div).style.height = stringHeight;
 
-	// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
-		$.getJSON("http://visucosmos.info/"+file, function(data) {
-			var lat, lon;
+	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		// $.getJSON("http://visucosmos.info/"+file, function(data) {
+		var lat, lon;
+		var coords = new Array(2);
+		var attr1, attr2;
 
 		$.each(data, function(key, val) {
-			// $.each(val, function(key, val) {
-				console.log('in');
-				console.log(key, data[0]);
 
-				$.each(val, function(key, d){
-					console.log(key);
-					console.log(val['attr6'] + ", " + val['attr7']);	
-				});
+			console.log(key, data[0]);
+			console.log(val['attr6'] + ", " + val['attr7']);
+			attr1 = key;
+			attr2 = key;
+
+			var i = 0;
+			$.each(val, function(key, d){
+				coords[i][0] = val[attr1];
+				coords[i][1] = val[attr2];
+				i++;
+			});
 				
+			marker = new google.maps.Marker({
+				position: google.maps.LatLng(val, val),
+				map: map,
+				animation: google.maps.Animation.DROP,
+			});
 
-				marker = new google.maps.Marker({
-					position: google.maps.LatLng(val, val),
-					map: map,
-					animation: google.maps.Animation.DROP,
-				});
-
-			// });
 		});
 	});
 
 
 
 }
-function bubbleChart(filename, div) {
-	console.log("this is being called");
+
+function bubbleChart(filename, div, width, height) {
+
+	// console.log("this is being called");
 	var renderAt = makeId(div);
 	var file = filename;
 	var header = "";
@@ -399,7 +408,7 @@ function bubbleChart(filename, div) {
 		//$.getJSON("http://visucosmos.info/"+file, function(data) {
 		$.each(data, function(key, val) {
 			$.each(val, function(key, val) {
-				console.log(val);
+				// console.log(val);
 				content = content.concat(val.toString() + " ");	
 			});
 	});
@@ -410,7 +419,7 @@ function bubbleChart(filename, div) {
 
 	
 	function formatData(text)	{
-		console.log("format being called");
+		// console.log("format being called");
 		var data = text; 
 		var dataarray = data.split(" ");
 		var unique = [];
@@ -451,63 +460,65 @@ function bubbleChart(filename, div) {
 
 	}
 	
-	function createVis(uniquevalues, counts){
-			console.log("create vis being called");
-			var unique = uniquevalues;
-			var count = counts; 
-			var myjson = '[';
+	function createVis(uniquevalues, counts) {
+		
+		console.log("create vis being called");
+		var unique = uniquevalues;
+		var count = counts; 
+		var myjson = '[';
 
-			for (var i = 0; i < unique.length; i++)
-			{
-				var uniquepart = '{"name":"' + unique[i] + '"';
-				myjson += uniquepart; 
-				var sizepart = ', "value":';
-				myjson += sizepart;
-				var countpart = count[i] + '';
-				myjson += countpart;
-				if (i == unique.length-1) {
-					var notending = "}";
-					myjson += notending;}
-				else{
-					var ending = "},";
-					myjson += ending;}
-			} 
+		for (var i = 0; i < unique.length; i++)
+		{
+			var uniquepart = '{"name":"' + unique[i] + '"';
+			myjson += uniquepart; 
+			var sizepart = ', "value":';
+			myjson += sizepart;
+			var countpart = count[i] + '';
+			myjson += countpart;
+			if (i == unique.length-1) {
+				var notending = "}";
+				myjson += notending;}
+			else{
+				var ending = "},";
+				myjson += ending;}
+		} 
 
-			myjson += "]";
+		myjson += "]";
 
 			console.log(myjson);
 
 			var json = JSON.parse(myjson);
 
-			var r = 248
+			var height = 208
+			var width = 241 
 			var bubble_layout = d3.layout.pack()
-			    .sort(null) // HERE
-			    .size([r,r])
-			    .padding(1.5);
+					.sort(null) // HERE
+					.size([width,height]);
+					// .padding(1.5);
 
 			var vis = d3.select(renderAt).append("svg")
-			    .attr("width" , r)
-			    .attr("height", r)
+					.attr("width" , width)
+					.attr("height", height)
 
 			var selection = vis.selectAll("g.node")
-			              .data(bubble_layout.nodes({children: json}).filter(function(d) { return !d.children; }) ); 
+										.data(bubble_layout.nodes({children: json}).filter(function(d) { return !d.children; }) ); 
 
 			//Enter
 			//HERE
 			var node = selection.enter().append("g")
-			              .attr("class", "node")
-			              .attr("transform", function(d) { return "translate(" + d.x + ", " + d.y + ")"; }).filter(function(d){
-			      return d.value > 0;
-			    })  // HERE
-			    
+										.attr("class", "node")
+										.attr("transform", function(d) { return "translate(" + d.x + ", " + d.y + ")"; }).filter(function(d){
+						return d.value > 0;
+					})  // HERE
+					
 			node.append("circle")
-			    .attr("r", function(d) { return d.r; })
-			    .style("fill", function(d) { return 'aaaaaa'; });
+					.attr("r", function(d) { return d.r; })
+					.style("fill", function(d) { return 'f44'; });
 
 			node.append("text")
-			    .attr("text-anchor", "middle")
-			    .attr("dy", ".3em")
-			    .text(function(d) { return d.name; });
+					.attr("text-anchor", "middle")
+					.attr("style", "font-size: 0.5em;")
+					.text(function(d) { return d.name; });
 	}
 
 }
