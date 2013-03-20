@@ -403,14 +403,13 @@ Route::post('data/generate', function(){
 		$visu->available_graphs = $available_graphs;
 		$visu->dimension = $dimension;
 		$visu->save();
-
 		$attr = serialize($attr);
 		$visu->params = $attr;
 		$visu->save();
 
-		$data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->where('line_type', '=', 'L')->get(Input::get('selected_attr')));
-		$data = $data->content;
-
+		$data = Data::getJson($data_set, Input::get('selected_attr'));
+		// $data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->where('line_type', '=', 'L')->get());
+		// $data = $data->content;
 		File::put("public_html/json/$vis_id.json", $data);
 
 		$visu->json_path = "json/$vis_id.json";

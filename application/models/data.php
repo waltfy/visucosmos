@@ -10,11 +10,31 @@
 			return $this->has_many('Visualisation');
 		}
 
+		static function getJson($data_set_id, $attributes) {
+
+			$data = array();
+
+			$headers = Data::where('data_set_id', '=', $data_set_id)->where('line_type', '=', 'H')->first();
+			$headers = $headers->attributes;
+			$lines = Data::where('data_set_id', '=', $data_set_id)->where('line_type', '=', 'L')->get($attributes);
+			
+			foreach ($lines as $line) {
+				$c_data = array();
+				for ($i = 0; $i < count($attributes); $i++) { 
+					$c_data += array($headers[$attributes[$i]] => $line->attributes[$attributes[$i]]);
+				}
+				array_push($data, $c_data);
+			}
+
+			$data = json_encode($data);
+			return $data;
+		}
+
 		static function validateType($types) {
 
-			echo "<pre>";
-			print_r($types);
-			echo "</pre>";
+			// echo "<pre>";
+			// print_r($types);
+			// echo "</pre>";
 			
 			$pieChart = explode(', ', Graphs::where('id', '=', '1')->only('type'));
 			$barChart = explode(', ', Graphs::where('id', '=', '2')->only('type'));
@@ -143,7 +163,7 @@
       $newRow
       ->where('id','=',$R_id)
       ->update(array('attr2' => $type));
-      
+            
       $value = $data->attr3;
       $type = Data::detectType($value);
       $newRow
