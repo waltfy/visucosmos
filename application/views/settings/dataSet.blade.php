@@ -14,35 +14,17 @@
 	
 	{{Form::open('settings/mark_data', 'POST', array('class' => 'form-horizontal'))}}
 	<small>
-	<table>
+	<table class ="table table-hover">
 	@foreach ($Datas as $Data)
 	<tr>
 	  <td>{{Form::checkbox('rows[]',$Data->id)}} </td>
-	  <td>{{$Data->attr1}}</td>
-	  <td></td>
-	  <td>{{$Data->attr2}}</td>
-	  <td></td>
-	  <td>{{$Data->attr3}}</td>
-	  <td></td>
-	  <td>{{$Data->attr4}}</td>
-	  <td></td>
-	  <td>{{$Data->attr5}}</td>
-	  <td></td>
-	  <td>{{$Data->attr6}}</td>
-	  <td></td>
-	  <td>{{$Data->attr7}}</td>
-	  <td></td>
-	  <td>{{$Data->attr8}}</td>
-	  <td></td>
-	  <td>{{$Data->attr9}}</td>
-	  <td></td>
-	  <td>{{$Data->attr10}}</td>
-	  <td></td>
-	  <td>{{$Data->attr11}}</td>
-	  <td></td>
-	  <td>{{$Data->attr12}}</td>
-	  <td></td>
-	  <td>{{$Data->attr13}}</td>
+	  <?php
+		for($l = 1; $l <= 14; $l++){
+			$attr = "attr".$l;
+			echo'<td>'.$Data->$attr.'</td>'; 
+		}
+		?>
+
 	</tr>
 	{{ Form::hidden('DS_id', $Data->data_set_id ) }}
 	@endforeach

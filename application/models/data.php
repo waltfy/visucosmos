@@ -102,32 +102,32 @@
 			
 			$Data_set = new Sets;
 			$DS_id = $Data_set->insert_get_id(array('name' => $Input['name']));      
-      //Adds csv file to database and server
-      //server
-      $Files = Input::file('csv');
-      if (is_array($Files) && isset($Files['error']) && $Files['error'] == 0) {
-        Input::upload('csv',path('storage').'/csv/',$Input['name'].'.csv');
-      }
+      	//Adds csv file to database and server
+      	//server
+      	$Files = Input::file('csv');
+      	if (is_array($Files) && isset($Files['error']) && $Files['error'] == 0) {
+        	Input::upload('csv',path('storage').'/csv/',$Input['name'].'.csv');
+      	}	
       
       
-      //database
-      $file = fopen(path('storage').'/csv/'.$Input['name'].'.csv', 'r');
+      	//database
+      	$file = fopen(path('storage').'/csv/'.$Input['name'].'.csv', 'r');
       
-      //work arround to fix attr1 layout, could be improved
-      while(($data = fgetcsv($file, 0, ',')) !== FALSE){
+      	//work arround to fix attr1 layout, could be improved
+      	while(($data = fgetcsv($file, 0, ',')) !== FALSE){
         
-        $Data = new Data();
-        $R_id = $Data->insert_get_id(array('attr1' => $data[0], 'data_set_id' => $DS_id)); 
+        	$Data = new Data();
+        	$R_id = $Data->insert_get_id(array('attr1' => $data[0], 'data_set_id' => $DS_id)); 
       
-        for($l = 1; $l < count($data); $l++){
-          $record = $l + 1;
-          $Data
-          ->where('data_set_id', '=', $DS_id)
-          ->where_in('id', array($R_id))
-          ->update(array('attr'.$record => $data[$l]));
-        }      
+        	for($l = 1; $l < count($data); $l++){
+          	$record = $l + 1;
+          	$Data
+          	->where('data_set_id', '=', $DS_id)
+          	->where_in('id', array($R_id))
+          	->update(array('attr'.$record => $data[$l]));
+        	}      
         
-      }
+      	}
        
       return $DS_id;
 		
@@ -139,7 +139,6 @@
 	      foreach(Input::get('rows') as $row){
 	                
 	        $SomeData = Data::find($row);
-	        $return = $row;
 	        $SomeData->line_type =$Label;
 	        $SomeData->save();
 	     }
@@ -149,91 +148,30 @@
 	  
 	  public static function generateType($DS_id){
 	  
+		//first row  
 	    $data = Data::where('data_set_id','=',$DS_id)->where('line_type','=','L')->first();
-	    
-	    $newRow = new Data;
-	    
 	    $value = $data->attr1;
 	    $type = Data::detectType($value);
-	      	      
+	    $newRow = new Data;	      
 	    $R_id = $newRow->insert_get_id(array('attr1' => $type, 'data_set_id' => $DS_id, 'line_type' => 'T'));
 	    
-      $value = $data->attr2;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr2' => $type));
-            
-      $value = $data->attr3;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr3' => $type));
-      
-      $value = $data->attr4;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr4' => $type));
-      
-      $value = $data->attr5;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr5' => $type));
-      
-      $value = $data->attr6;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr6' => $type));
-      
-      $value = $data->attr7;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr7' => $type));
-      
-      $value = $data->attr8;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr8' => $type));
-      
-      $value = $data->attr9;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr9' => $type));
-      
-      $value = $data->attr10;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr10' => $type));
-      
-      $value = $data->attr11;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr11' => $type));
-      
-      $value = $data->attr12;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr12' => $type));
-      
-      $value = $data->attr13;
-      $type = Data::detectType($value);
-      $newRow
-      ->where('id','=',$R_id)
-      ->update(array('attr13' => $type));
-        
-        
-        
-        
-         
+	    //second row
+	    $j = 2;
+	    $attr = "attr".$j;
+	    $value = $data ->$attr;
+
+	    while($value != null){
+
+      		$value = $data->$attr;
+      		$type = Data::detectType($value);
+      		$newRow
+      		->where('id','=',$R_id)
+      		->update(array($attr => $type));
+
+      		$j++;
+      		$attr = "attr".$j;
+      		$value = $data -> $attr;
+         }
 	  }
 	  
 	  public static function detectType($value){

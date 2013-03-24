@@ -73,9 +73,9 @@
 		  Data::generateType($Input['DS_id']);
 		
 		  //Data for view
-		  $Rows = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','L')->get();
-			$Headers = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','H')->get();
-			$Types = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','T')->get();
+		$Rows = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','L')->get();
+		$Headers = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','H')->get();
+		$Types = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','T')->get();
 			
 			return View::make('settings.dataType')
 			->with('Rows', $Rows)
