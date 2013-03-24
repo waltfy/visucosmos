@@ -24,20 +24,28 @@
 			</ul>
 		</div>
 	@endif
-	<h2>Add Data Set</h2>
-	{{ Form::open_for_files('settings/add_data', 'POST', array('class' => 'form-horizontal')) }}
-	<p>
-	{{ Form::label('name', "Enter a data set name.") }}
-	{{ Form::text('name', '', array('placeholder' => 'Twitter Data'))}}
-	</p>
-	<p>
-	{{ Form::label('description', "Enter a data set description.") }}
-	{{ Form::textarea('description', '', array('placeholder' => 'Twitter Data', 'rows' => '3'))}}
-	</p>
-	<p>
-	{{ Form::file('csv') }}
-	</p>
-	{{ Form::hidden('current_user', Auth::user()->username ) }}
-	{{ Form::button('Upload', array('class' => 'btn btn-success' )) }}
-	{{ Form::close() }}
+
+	<div class="row">
+		<div class="span5 offset1">
+		<h2>Add Data Set</h2>
+		{{ Form::open_for_files('settings/add_data', 'POST', array('class' => 'form-horizontal')) }}
+		<p>
+		{{ Form::label('name', "Enter a data set name.") }}
+		{{ Form::text('name', '', array('placeholder' => 'Twitter Data'))}}
+		</p>
+		<p>
+		{{ Form::label('description', "Enter a data set description.") }}
+		{{ Form::textarea('description', '', array('placeholder' => 'Twitter Data', 'rows' => '3'))}}
+		</p>
+		<p>
+		{{ Form::file('csv') }}
+		</p>
+		{{ Form::hidden('current_user', Auth::user()->username ) }}
+		{{ Form::button('Upload', array('class' => 'btn btn-success' )) }}
+		{{ Form::close() }}
+		</div>
+		<div class="span4">
+		<h2>Access to Cosmos Data</h2>
+		</div>
+	</div>
 @endsection
