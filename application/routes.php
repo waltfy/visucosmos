@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| Application Routes
+| Application 
 |--------------------------------------------------------------------------
 |
 | Simply tell Laravel the HTTP verbs and URIs it should respond to. It is a
