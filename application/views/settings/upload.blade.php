@@ -27,7 +27,7 @@
 
 	<div class="row">
 		<div class="span5 offset1">
-		<h2>Add Data Set</h2>
+		<h2>Add Data CSV Set</h2>
 		{{ Form::open_for_files('settings/add_data', 'POST', array('class' => 'form-horizontal')) }}
 		<p>
 		{{ Form::label('name', "Enter a data set name.") }}
@@ -44,8 +44,9 @@
 		{{ Form::button('Upload', array('class' => 'btn btn-success' )) }}
 		{{ Form::close() }}
 		</div>
-		<div class="span4">
-		<h2>Access to Cosmos Data</h2>
+		<div class="span5">
+		<h2>Access Cosmos Data</h2>
+		<i><small> Not currently avalible. </small></i>
 		</div>
 	</div>
 @endsection
