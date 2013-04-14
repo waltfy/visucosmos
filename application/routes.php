@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| Application Routes
+| Application 
 |--------------------------------------------------------------------------
 |
 | Simply tell Laravel the HTTP verbs and URIs it should respond to. It is a
@@ -408,8 +408,7 @@ Route::post('data/generate', function(){
 		$visu->save();
 
 		$data = Data::getJson($data_set, Input::get('selected_attr'));
-		// $data = Response::eloquent(Data::where('data_set_id', '=', $data_set)->where('line_type', '=', 'L')->get());
-		// $data = $data->content;
+		
 		File::put("public_html/json/$vis_id.json", $data);
 
 		$visu->json_path = "json/$vis_id.json";
