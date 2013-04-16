@@ -27,7 +27,6 @@ function makeId(divname) {
 function wordCloud(filename, div, width, height) {
 
 	var renderAt = makeId(div);
-
 	var file = filename;
 	var header = "";
 	var content = "";
@@ -588,8 +587,17 @@ function heatMap(filename, div, width, height) {
  	}
 }
 
+$(document).on("load", function() {
+		console.log('test');
+		var aspect = 960 / 500;
+		$charts = $('div[id^="render"]').find('svg');
+    var targetWidth = $charts.parent().width();
+    $charts.attr("width", targetWidth);
+    $charts.attr("padding-bottom", targetWidth);
+});
+
 $(window).on("resize", function() {
-		var aspect = 960 / 500,
+		var aspect = 960 / 500;
 		$charts = $('div[id^="render"]').find('svg');
     var targetWidth = $charts.parent().width();
     $charts.attr("width", targetWidth);
