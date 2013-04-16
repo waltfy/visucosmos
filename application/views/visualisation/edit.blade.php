@@ -61,10 +61,21 @@
 	<br>
 	@if (Session::has('response'))
 	<? $response = Session::get('response'); $i = 1; ?>
-		<div class='col span12'>
+		<div class='col span12 thumbnails'>
 			@foreach ($graphs as $render)
-				<div class='col span4' id='render{{$i}}' graphId='{{ $render->id }}'>
-						<? echo "<script type='text/javascript'>".$render->attributes['function']."('$response', 'render$i', 241, 208);</script>"; ?>
+				<div class='thumbnail col span4' style = "margin-top: 20px;"  graphId='{{ $render->id }}'>
+						<div id='render{{$i}}'>
+							<? echo "<script type='text/javascript'>".$render->attributes['function']."('$response', 'render$i', 241, 208);</script>"; ?>
+						</div>
+						<div class = "caption" style = "text-align:center">
+							<h3><? echo $render->attributes['graph_name']?> </h3>
+							<? if(strcmp($render->attributes['function'], "") != 0) {
+									echo "<p><a href='' class='btn btn-primary'>Generate</a></p>";}
+								else {
+									echo "<p>This graph could not been produced with any of the graphing utilities we have available. However, it fits the scalar factor you have chosen.</p>";
+								}
+							?>
+						</div>
 				</div>
 				<? $i++; ?>
 			@endforeach

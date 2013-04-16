@@ -35,4 +35,5 @@
 		<?php endforeach; ?>
 	<?php endif; ?>
 <?php \Laravel\Section::stop(); ?>
+
 <?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

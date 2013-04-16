@@ -227,16 +227,12 @@ function barChart(filename, div, width, height) {
 	// d3.json("http://visucosmos.info/"+file, function(error, data) {	
 		var attr;
 
-		for(var key in data[0]){
-			attr = key;
-		}
-
 		data.forEach(function(d) {
 			d[attr] = +d[attr];
 		});
 
-		x.domain(data.map(function(d) { return "d[key]"; }));
-		y.domain([0, d3.max(data, function(d) { return d[attr]; })]);
+		x.domain(data.map(function(d) { return d[0]; }));
+		y.domain([0, d3.max(data, function(d) { return d[1]; })]);
 
 		svg.append("g")
 				.attr("class", "x axis")

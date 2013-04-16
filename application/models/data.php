@@ -43,6 +43,7 @@
 			$coordPlot = explode(', ', Graphs::where('id', '=', '11')->only('type'));
 			$bubbleChart = explode(', ', Graphs::where('id', '=', '12')->only('type'));
 			$heatMap = explode(', ', Graphs::where('id', '=', '13')->only('type'));
+			$treeChart = explode(', ', Graphs::where('id', '=', '16')->only('type'));
 
 			// echo "<pre>";
 			// print_r($barChart);
@@ -75,6 +76,10 @@
 
 				if (in_array($types[0], $bubbleChart)) {
 					array_push($available_graphs, '12');
+				}
+
+				if (in_array($types[0], $treeChart)) {
+					array_push($available_graphs, '16');
 				}
 			}
 
