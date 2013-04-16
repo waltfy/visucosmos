@@ -587,3 +587,13 @@ function heatMap(filename, div, width, height) {
  		
  	}
 }
+
+$(window).on("resize", function() {
+		var aspect = 960 / 500,
+		$charts = $('div[id^="render"]').find('svg');
+    var targetWidth = $charts.parent().width();
+
+    console.log(targetWidth);
+    $charts.attr("width", targetWidth);
+    $charts.attr("padding-bottom", targetWidth);
+});

@@ -63,7 +63,7 @@
 	<? $response = Session::get('response'); $i = 1; ?>
 		<div class='col span12 thumbnails'>
 			@foreach ($graphs as $render)
-				<div class='thumbnail col span4' style = "margin-top: 20px;"  graphId='{{ $render->id }}'>
+				<div class='thumbnail col' style = "margin-top: 20px;"  graphId='{{ $render->id }}'>
 						<div id='render{{$i}}'>
 							<? echo "<script type='text/javascript'>".$render->attributes['function']."('$response', 'render$i', 241, 208);</script>"; ?>
 						</div>
