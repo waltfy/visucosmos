@@ -300,7 +300,7 @@ function locationPlot(filename, div, width, height) {
 	};
 
 	var map = new google.maps.Map(document.getElementById(div), mapOptions);
-
+	width-=30;
 	var stringWidth = width + "px";
 	var stringHeight = height + "px";
 
@@ -521,6 +521,7 @@ function heatMap(filename, div, width, height) {
 	var file = filename;
 	var renderAt = makeId(div);
 
+	width-=25;
 	var stringWidth = width + "px";
 	var stringHeight = height + "px";
 
@@ -530,7 +531,7 @@ function heatMap(filename, div, width, height) {
     var myLatlng = new google.maps.LatLng(51.517, 0.1062);
     // define map properties
     var myOptions = {
-      zoom: 8,
+      zoom: 5,
       center: myLatlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: false,
@@ -574,8 +575,8 @@ function heatMap(filename, div, width, height) {
 		// $.getJSON("http://visucosmos.info/"+file, function(data) {
 			$.each(data, function(key, val) {
 				// $.each(val, function(key, val) {
-				if(val['attr6'] != "-"){
-					topJsonArray.data.push({lat : val['attr6'], lng: val['attr7'], count: 30});
+				if(val['Latitude'] != "-"){
+					topJsonArray.data.push({lat : val['Latitude'], lng: val['Longitude'], count: 30});
 				}	
 				// });
 			});
