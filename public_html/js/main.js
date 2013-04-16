@@ -427,7 +427,7 @@ function bubbleChart(filename, div, width, height) {
 	}
 
 	function createGraph(dataarray, unique)	{
-		console.log("create graph being called");
+		// console.log("create graph being called");
 		var datavalues = dataarray;
 		var uniquevalues = unique;
 		var counts = []; 
@@ -449,13 +449,13 @@ function bubbleChart(filename, div, width, height) {
 		uniquevalues.shift();
 		counts.shift();
 
-		createVis(uniquevalues, counts);
+		createVis(uniquevalues, counts, width, height);
 
 	}
 	
-	function createVis(uniquevalues, counts) {
+	function createVis(uniquevalues, counts, w, h) {
 		
-		console.log("create vis being called");
+		// console.log("create vis being called");
 		var unique = uniquevalues;
 		var count = counts; 
 		var myjson = '[';
@@ -478,12 +478,12 @@ function bubbleChart(filename, div, width, height) {
 
 		myjson += "]";
 
-			console.log(myjson);
+			// console.log(myjson);
 
 			var json = JSON.parse(myjson);
 
-			var height = 208
-			var width = 241 
+			var height = h;
+			var width = w 
 			var bubble_layout = d3.layout.pack()
 					.sort(null) // HERE
 					.size([width,height]);
@@ -581,7 +581,7 @@ function heatMap(filename, div, width, height) {
 			});
  		});
 
- 		console.log(topJsonArray);
+ 		// console.log(topJsonArray);
  		return topJsonArray; 
 
  		
@@ -592,8 +592,6 @@ $(window).on("resize", function() {
 		var aspect = 960 / 500,
 		$charts = $('div[id^="render"]').find('svg');
     var targetWidth = $charts.parent().width();
-
-    console.log(targetWidth);
     $charts.attr("width", targetWidth);
     $charts.attr("padding-bottom", targetWidth);
 });

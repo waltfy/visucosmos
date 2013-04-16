@@ -67,6 +67,12 @@
 			return Visualisation::get_json($id);
 		}
 
+		function action_save($vis_id, $graph_id) {
+			$visualisation = Visualisation::selectVisualisation($vis_id, $graph_id);
+			// print_r($visualisation);
+			return Redirect::to('visualisation/view/'.$vis_id);
+		}
+
 		function action_delete($id) {
 			$details = Visualisation::find($id);
 			$name = $details->name;

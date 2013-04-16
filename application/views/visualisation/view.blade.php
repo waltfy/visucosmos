@@ -15,9 +15,13 @@
 	@endif
 	<h2>{{ $details->name }}  {{ HTML::link('visualisation/edit/'.$details->id, 'Edit', array('class' => 'btn btn-warning')) }}</h2>
 	<small>Below you can view the graph you have selected.</small>
-	<div id='graph_place' class='col span12'>
-		<? echo "<script type='text/javascript'>". "wordCloud" ."('$details->json_path', 'graph_place', 700, 500);</script>"; ?>
-	</div>
+	@if ($details->selected_graph != null)
+		<div id='graph_place' class='col span12'>
+			<script type='text/javascript'>
+			<? echo Graphs::getFunctionName(unserialize($details->selected_graph))."('$details->json_path', 'graph_place', 700, 500);"; ?>
+			</script>
+		</div>
+	@endif
 
 <script type="text/javascript">
 	var canvas = document.getElementById("test");
