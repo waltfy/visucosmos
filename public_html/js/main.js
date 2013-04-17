@@ -582,8 +582,6 @@ function heatMap(filename, div, width, height) {
 
  		// console.log(topJsonArray);
  		return topJsonArray; 
-
- 		
  	}
 }
 
@@ -603,3 +601,21 @@ $(window).on("resize", function() {
     $charts.attr("width", targetWidth);
     $charts.attr("padding-bottom", targetWidth);
 });
+
+function show_svg_code(){
+	// Get the d3js SVG element
+	var tmp  = document.getElementById("graph_place");
+	var svg = tmp.getElementsByTagName("svg")[0];
+
+	// Extract the data as SVG text string
+	var svg_xml = (new XMLSerializer).serializeToString(svg);
+
+	//Optional: prettify the XML with proper indentations
+	svg_xml = vkbeautify.xml(svg_xml);
+
+	// Set the content of the <pre> element with the XML
+	$(".svg_code pre").text(svg_xml);
+
+	//Optional: Use Google-Code-Prettifier to add colors.
+	prettyPrint();
+}
