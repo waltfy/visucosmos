@@ -51,7 +51,7 @@
 				else {
 					$saved = array();
 				}
-				
+
 				$attr = $attr->attributes;
 				$available = array_diff($attr, $saved);
 				return View::make('visualisation.edit')->with('details', $details)->with('dataset', $dataset)->with('attr', $available)->with('saved', $saved)->with('graphs', $available_graphs);
