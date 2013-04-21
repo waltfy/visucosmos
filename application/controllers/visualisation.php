@@ -67,6 +67,25 @@
 			return Visualisation::get_json($id);
 		}
 
+		function action_downloadcsv($id) {
+			$json_str = Visualisation::get_json($id);
+
+			$array = json_decode($json_str);
+			$newarray = array();
+			$firstvalue = ""; 
+
+			$newarray = array(); 
+			foreach ($array as $key => $jsons) { // This will search in the 2 jsons
+     			foreach($jsons as $key => $value) {
+         			echo $key; 
+         			echo " , ";
+         			echo $value; 
+         			echo "<br/>";
+    			}
+			}
+
+		}
+
 		function action_save($vis_id, $graph_id) {
 			$visualisation = Visualisation::selectVisualisation($vis_id, $graph_id);
 			// print_r($visualisation);
