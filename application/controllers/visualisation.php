@@ -51,7 +51,7 @@
 				else {
 					$saved = array();
 				}
-
+				
 				$attr = $attr->attributes;
 				$available = array_diff($attr, $saved);
 				return View::make('visualisation.edit')->with('details', $details)->with('dataset', $dataset)->with('attr', $available)->with('saved', $saved)->with('graphs', $available_graphs);
@@ -79,10 +79,15 @@
      			foreach($jsons as $key => $value) {
          			echo $key; 
          			echo " , ";
-         			echo $value; 
+         			echo $value;
          			echo "<br/>";
     			}
 			}
+
+ 			header("Content-type: text/csv");  
+			header("Cache-Control: no-store, no-cache");  
+			header('Content-Disposition: attachment; filename="filename.csv"'); 
+			 
 
 		}
 
