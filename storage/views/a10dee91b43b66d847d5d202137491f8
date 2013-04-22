@@ -1,9 +1,0 @@
-<? $pagetitle = 'Settings'; ?>
-
-<?php \Laravel\Section::start('content'); ?>
-	<h2>Settings</h2>
-	<small>Make changes to your personal account.</small>
-	<br>
-	<?php echo  HTML::link('settings/password', 'Change Password'); ; ?>
-<?php \Laravel\Section::stop(); ?>
-<?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

@@ -1,5 +1,0 @@
-<footer>
-
-</footer>
-<?php echo  HTML::script('js/plugins.js') ; ?>
-<?php echo  HTML::script('js/bootstrap.js'); ?>
