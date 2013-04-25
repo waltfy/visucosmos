@@ -51,7 +51,7 @@
 				else {
 					$saved = array();
 				}
-
+				
 				$attr = $attr->attributes;
 				$available = array_diff($attr, $saved);
 				return View::make('visualisation.edit')->with('details', $details)->with('dataset', $dataset)->with('attr', $available)->with('saved', $saved)->with('graphs', $available_graphs);
@@ -65,6 +65,30 @@
 
 		function action_download($id) {
 			return Visualisation::get_json($id);
+		}
+
+		function action_downloadcsv($id) {
+			$json_str = Visualisation::get_json($id);
+
+			$array = json_decode($json_str);
+			$newarray = array();
+			$firstvalue = ""; 
+
+			$newarray = array(); 
+			foreach ($array as $key => $jsons) { // This will search in the 2 jsons
+     			foreach($jsons as $key => $value) {
+         			echo $key; 
+         			echo " , ";
+         			echo $value;
+         			echo "<br/>";
+    			}
+			}
+
+ 			header("Content-type: text/csv");  
+			header("Cache-Control: no-store, no-cache");  
+			header('Content-Disposition: attachment; filename="filename.csv"'); 
+			 
+
 		}
 
 		function action_save($vis_id, $graph_id) {
