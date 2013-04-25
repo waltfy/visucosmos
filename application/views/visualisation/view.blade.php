@@ -13,14 +13,14 @@
 			</ul>
 		</div>
 	@endif
-	<h2>{{ $details->name }}  {{ HTML::link('visualisation/edit/'.$details->id, 'Edit', array('class' => 'btn btn-warning')) }}<button onclick="javascript:doButterfly()">Get DataURL</button></h2>
+	<h2>{{ $details->name }}  {{ HTML::link('visualisation/edit/'.$details->id, 'Edit', array('class' => 'btn btn-warning')) }}</h2>
 	<small>Below you can view the graph you have selected.</small>
 	@if ($details->selected_graph != null)
 		<div class='col span12' id='graph_place'>
 		</div>
-		<div class='svg_code'>
+		<div class='svg_code hide'>
 			<pre>
-				
+
 			</pre>
 		</div>
 	@endif

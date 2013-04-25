@@ -19,5 +19,4 @@
 	{{ HTML::script('js/main.js') }}
 	{{ HTML::script('js/vendor/prettify/prettify.js') }}
 	{{ HTML::script('js/vkbeautify.0.99.00.beta.js') }}
-	
 </head>

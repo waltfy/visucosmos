@@ -294,17 +294,18 @@ function locationPlot(filename, div, width, height) {
 	
 	var mapOptions = {
 		zoom: 4,
-		// center: myLatlng,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		scrollwheel: true,
+    draggable: true,
 	};
 
 	var map = new google.maps.Map(document.getElementById(div), mapOptions);
-	width-=30;
-	var stringWidth = width + "px";
-	var stringHeight = height + "px";
+	var stringWidth = $('#'+div).parent().width() - 3 + "px";
+	var stringHeight = stringWidth;
 
 	document.getElementById(div).style.width = stringWidth;
-	document.getElementById(div).style.height = stringHeight;
+	$('#'+div).css('padding-bottom', stringWidth);
+	// document.getElementById(div).style.height = stringHeight;
 
 	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
 		// $.getJSON("http://visucosmos.info/"+file, function(data) {
@@ -344,48 +345,37 @@ function locationPlot(filename, div, width, height) {
 function coordPlot(filename, div, width, height) {
 
 	var file = filename;
+
+	var stringWidth = $('#'+div).parent().width() + "px";
 	
 	var mapOptions = {
 		zoom: 4,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		scrollwheel: true,
+    draggable: true
 	};
 
-	var map = new google.maps.Map(document.getElementById(div), mapOptions);
+	var map = new google.maps.Map($('#'+div)[0], mapOptions);
+	
+	// // console.log(document.getElementById(div));
 
-	var stringWidth = width + "px";
-	var stringHeight = height + "px";
+	// $('#'+div).css('width', stringWidth);
+	// $('#'+div).css('padding-bottom', stringWidth);
 
-	document.getElementById(div).style.width = stringWidth;
-	document.getElementById(div).style.height = stringHeight;
+	// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+	// 	// $.getJSON("http://visucosmos.info/"+file, function(data) {
+	// 	$.each(data, function(key, val) {
+	// 		if (key > 4) { return }; // Remember to remove this.
+	// 		console.log(val['Latitude'] + ", " + val['Longitude']);
+			
+	// 		marker = new google.maps.Marker({
+	// 			position: google.maps.LatLng(val['Latitude'], val['Longitude']),
+	// 			map: map,
+	// 			animation: google.maps.Animation.DROP,
+	// 		});
 
-	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
-		// $.getJSON("http://visucosmos.info/"+file, function(data) {
-		var lat, lon;
-		var coords = new Array(2);
-		var attr1, attr2;
-
-		$.each(data, function(key, val) {
-
-			console.log(key, data[0]);
-			console.log(val['attr6'] + ", " + val['attr7']);
-			attr1 = key;
-			attr2 = key;
-
-			var i = 0;
-			$.each(val, function(key, d){
-				coords[i][0] = val[attr1];
-				coords[i][1] = val[attr2];
-				i++;
-			});
-				
-			marker = new google.maps.Marker({
-				position: google.maps.LatLng(val, val),
-				map: map,
-				animation: google.maps.Animation.DROP,
-			});
-
-		});
-	});
+	// 	});
+	// });
 }
 
 function bubbleChart(filename, div, width, height) {
@@ -586,10 +576,9 @@ function heatMap(filename, div, width, height) {
  	}
 }
 
-$(document).on("load", function() {
-		console.log('test');
+$(window).on("load", function() {
 		var aspect = 960 / 500;
-		$charts = $('div[id^="render"]').find('svg');
+		$charts = $('svg');
     var targetWidth = $charts.parent().width();
     $charts.attr("width", targetWidth);
     $charts.attr("padding-bottom", targetWidth);
@@ -597,7 +586,7 @@ $(document).on("load", function() {
 
 $(window).on("resize", function() {
 		var aspect = 960 / 500;
-		$charts = $('div[id^="render"]').find('svg');
+		$charts = $('svg');
     var targetWidth = $charts.parent().width();
     $charts.attr("width", targetWidth);
     $charts.attr("padding-bottom", targetWidth);

@@ -69,7 +69,7 @@
 				if (in_array($types[0], $wordCloud)) {
 					array_push($available_graphs, '3');
 				}
-
+				
 				if (in_array($types[0], $locationPlot)) {
 					array_push($available_graphs, '10');
 				}
