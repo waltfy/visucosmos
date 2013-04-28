@@ -19,4 +19,6 @@
 	<?php echo  HTML::script('js/main.js') ; ?>
 	<?php echo  HTML::script('js/vendor/prettify/prettify.js') ; ?>
 	<?php echo  HTML::script('js/vkbeautify.0.99.00.beta.js') ; ?>
+	<?php echo  HTML::script("http://canvg.googlecode.com/svn/trunk/rgbcolor.js") ; ?>
+	<?php echo  HTML::script("http://canvg.googlecode.com/svn/trunk/canvg.js") ; ?>
 </head>

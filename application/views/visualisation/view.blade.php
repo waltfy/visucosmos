@@ -26,5 +26,8 @@
 	@endif
 <script type="text/javascript">
 <? echo Graphs::getFunctionName(unserialize($details->selected_graph))."('$details->json_path', 'graph_place', 700, 500);"; ?>
+	$(window).load(function() {
+		getCanvas();
+	});
 </script>
 @endsection

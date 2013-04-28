@@ -25,6 +25,9 @@
 	<?php endif; ?>
 <script type="text/javascript">
 <? echo Graphs::getFunctionName(unserialize($details->selected_graph))."('$details->json_path', 'graph_place', 700, 500);"; ?>
+	$(window).load(function() {
+		getCanvas();
+	});
 </script>
 <?php \Laravel\Section::stop(); ?>
 <?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

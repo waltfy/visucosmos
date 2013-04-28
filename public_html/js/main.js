@@ -347,7 +347,7 @@ function coordPlot(filename, div, width, height) {
 	var file = filename;
 
 	var stringWidth = $('#'+div).parent().width() + "px";
-	
+
 	var mapOptions = {
 		zoom: 4,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -355,12 +355,12 @@ function coordPlot(filename, div, width, height) {
     draggable: true
 	};
 
-	var map = new google.maps.Map($('#'+div)[0], mapOptions);
+	var map = new google.maps.Map(document.getElementById(div), mapOptions);
 	
-	// // console.log(document.getElementById(div));
+	// console.log(document.getElementById(div));
 
-	// $('#'+div).css('width', stringWidth);
-	// $('#'+div).css('padding-bottom', stringWidth);
+	$('#'+div).css('width', stringWidth);
+	$('#'+div).css('padding-bottom', stringWidth);
 
 	// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
 	// 	// $.getJSON("http://visucosmos.info/"+file, function(data) {
@@ -592,7 +592,7 @@ $(window).on("resize", function() {
     $charts.attr("padding-bottom", targetWidth);
 });
 
-function show_svg_code(){
+function show_svg_code() {
 	// Get the d3js SVG element
 	var tmp  = document.getElementById("graph_place");
 	var svg = tmp.getElementsByTagName("svg")[0];
@@ -608,4 +608,6 @@ function show_svg_code(){
 
 	//Optional: Use Google-Code-Prettifier to add colors.
 	prettyPrint();
+
+	return svg_xml;
 }

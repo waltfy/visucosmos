@@ -19,4 +19,6 @@
 	{{ HTML::script('js/main.js') }}
 	{{ HTML::script('js/vendor/prettify/prettify.js') }}
 	{{ HTML::script('js/vkbeautify.0.99.00.beta.js') }}
+	{{ HTML::script("http://canvg.googlecode.com/svn/trunk/rgbcolor.js") }}
+	{{ HTML::script("http://canvg.googlecode.com/svn/trunk/canvg.js") }}
 </head>
