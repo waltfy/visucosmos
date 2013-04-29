@@ -45,6 +45,17 @@
 			$heatMap = explode(', ', Graphs::where('id', '=', '13')->only('type'));
 			$treeChart = explode(', ', Graphs::where('id', '=', '16')->only('type'));
 
+
+			$bigBar = explode(', ', Graphs::where('id', '=', '17')->only('type'));
+			$bigPie = explode(', ', Graphs::where('id', '=', '18')->only('type'));
+			$radar = explode(', ', Graphs::where('id', '=', '19')->only('type'));
+			$scatter = explode(', ', Graphs::where('id', '=', '20')->only('type'));
+			$hedge = explode(', ', Graphs::where('id', '=', '21')->only('type'));
+			$streamline = explode(', ', Graphs::where('id', '=', '23')->only('type'));
+			$dotPlot = explode(', ', Graphs::where('id', '=', '24')->only('type'));
+			$circTree = explode(', ', Graphs::where('id', '=', '25')->only('type'));
+			$gridGraph = explode(', ', Graphs::where('id', '=', '26')->only('type'));
+
 			// echo "<pre>";
 			// print_r($barChart);
 			// echo "</pre>";
@@ -97,6 +108,49 @@
 					array_push($available_graphs, '13');
 				}
 
+				if (in_array($types[0], $radar) && in_array($types[1], $radar)) {
+					array_push($available_graphs, '19');
+				}
+
+				if (in_array($types[0], $scatter) && in_array($types[1], $scatter)) {
+					array_push($available_graphs, '20');
+				}
+
+				if (in_array($types[0], $streamline) && in_array($types[1], $streamline)) {
+					array_push($available_graphs, '23');
+				}
+
+				if (in_array($types[0], $dotPlot) && in_array($types[1], $dotPlot)) {
+					array_push($available_graphs, '24');
+				}
+
+				if (in_array($types[0], $circTree) && in_array($types[1], $circTree)) {
+					array_push($available_graphs, '25');
+				}
+
+				if (in_array($types[0], $gridGraph) && in_array($types[1], $gridGraph)) {
+					array_push($available_graphs, '25');
+				}
+
+			}
+
+			if($dimension ==3) {
+
+				if (in_array($types[0], $bigBar) && in_array($types[1], $bigBar)) {
+					array_push($available_graphs, '17');
+				}
+
+				if (in_array($types[0], $bigPie) && in_array($types[1], $bigPie)) {
+					array_push($available_graphs, '18');
+				}
+
+				if (in_array($types[0], $hedge) && in_array($types[1], $hedge)) {
+					array_push($available_graphs, '21');
+				}
+
+				if (in_array($types[0], $gridGraph) && in_array($types[1], $gridGraph)) {
+					array_push($available_graphs, '26');
+				}
 			}
 
 			return $available_graphs;

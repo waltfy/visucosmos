@@ -1,0 +1,33 @@
+<? $pagetitle = $details->name; ?>
+
+<?php \Laravel\Section::start('content'); ?>
+
+	<?php if(isset($errors) && count($errors->all()) > 0): ?>
+		<div class='alert alert-error'>
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<ul>
+				<?php foreach($errors->all('<li>:message</li>') as $message): ?>
+				<?php echo  $message ; ?>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	<?php endif; ?>
+	<h2><?php echo  $details->name ; ?>  <?php echo  HTML::link('visualisation/edit/'.$details->id, 'Edit', array('class' => 'btn btn-warning')) ; ?></h2>
+	<small>Below you can view the graph you have selected.</small>
+	<?php if($details->selected_graph != null): ?>
+		<div class='col span12' id='graph_place'>
+		</div>
+		<div class='svg_code hide'>
+			<pre>
+
+			</pre>
+		</div>
+	<?php endif; ?>
+<script type="text/javascript">
+<? echo Graphs::getFunctionName(unserialize($details->selected_graph))."('$details->json_path', 'graph_place', 700, 500);"; ?>
+	$(window).load(function() {
+		getCanvas();
+	});
+</script>
+<?php \Laravel\Section::stop(); ?>
+<?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

@@ -198,11 +198,14 @@ function barChart(filename, div, width, height) {
 	var file = filename;
 	var renderAt = makeId(div);
 
-	var margin = {top: 20, right: 20, bottom: 30, left: 40},
-		width = width - margin.left - margin.right,
-		height = height - margin.top - margin.bottom;
+	var stringWidth = $('#'+div).parent().width() - 3;
+	var stringHeight = stringWidth;
 
-	var formatPercent = d3.format(".0%");
+	var margin = {top: 20, right: 20, bottom: 30, left: 60},
+		width = stringWidth - margin.left - margin.right,
+		height = stringHeight - margin.top - margin.bottom;
+
+	var formatPercent = d3.format(".0");
 
 	var x = d3.scale.ordinal()
 			.rangeRoundBands([0, width], .1, 1);
@@ -222,73 +225,76 @@ function barChart(filename, div, width, height) {
 	var svg = d3.select(renderAt).append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
+		.attr("font-size", "0.5em")
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	d3.json("http://localhost/visucosmos-git/public_html/"+file, function(error, data) {
 	// d3.json("http://visucosmos.info/"+file, function(error, data) {	
-		var attr;
+		var attr; 
 
-		data.forEach(function(d) {
-			d[attr] = +d[attr];
+		var headers = []; 
+
+		for(var obj in data){
+		    if(data.hasOwnProperty(obj)){
+			    for(var prop in data[obj]){
+				        if(data[obj].hasOwnProperty(prop)){
+				     		if(contains(headers, prop) != true)
+				     		{
+				     			headers.push(prop);
+				     		}
+
+				        }
+				    }
+				}
+		}
+
+		var one = headers[0];
+		var two = headers[1];
+
+		x.domain(data.map(function(d) { console.log(d[one]); return d[one]; }));
+		y.domain([0, d3.max(data, function(d) { console.log(d[two]); return d[two];})]);
+
+	  svg.append("g")
+	      .attr("class", "x axis")
+	      .attr("transform", "translate(0," + height + ")")
+	      .call(xAxis);
+
+	  svg.append("g")
+	      .attr("class", "y axis")
+	      .call(yAxis)
+	    .append("text")
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", ".71em")
+	      .style("text-anchor", "end")
+	      .text("Frequency");
+
+	      var fill = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+
+	  svg.selectAll(".bar")
+	      .data(data)
+	    .enter().append("rect")
+	      .attr("class", "bar")
+	      .attr("fill", fill)
+	      .attr("stroke-width", 1)
+	      .attr("stroke", "rgb(0,0,0)")
+	      .attr("x", function(d) { return x(d[one]); })
+	      .attr("width", x.rangeBand())
+	      .attr("y", function(d) { return y(d[two]); })
+	      .attr("height", function(d) { return height - y(d[two]); });
 		});
 
-		x.domain(data.map(function(d) { return d[0]; }));
-		y.domain([0, d3.max(data, function(d) { return d[1]; })]);
+	function contains(a, obj) {
+	    var i = a.length;
+	    while (i--) {
+	       if (a[i] === obj) {
+	           return true;
+	       }
+	    }
+	    return false;
+	}
 
-		svg.append("g")
-				.attr("class", "x axis")
-				.attr("transform", "translate(0," + height + ")")
-				.call(xAxis);
-
-		svg.append("g")
-				.attr("class", "y axis")
-				.call(yAxis)
-			.append("text")
-				.attr("transform", "rotate(-90)")
-				.attr("y", 6)
-				.attr("dy", ".71em")
-				.style("text-anchor", "end")
-				.text("Frequency");
-
-		svg.selectAll(".bar")
-				.data(data[0][attr])
-			.enter().append("rect")
-				.attr("class", "bar")
-				.attr("x", function(d) { return x(d.letter); })
-				.attr("width", x.rangeBand())
-				.attr("y", function(d) { return y(d.frequency); })
-				.attr("height", function(d) { return height - y(d.frequency); });
-
-		d3.select("input").on("change", change);
-
-		var sortTimeout = setTimeout(function() {
-			d3.select("input").property("checked", true).each(change);
-		}, 2000);
-
-		function change() {
-			clearTimeout(sortTimeout);
-
-			// Copy-on-write since tweens are evaluated after a delay.
-			var x0 = x.domain(data.sort(this.checked
-					? function(a, b) { return b.frequency - a.frequency; }
-					: function(a, b) { return d3.ascending(a.letter, b.letter); })
-					.map(function(d) { return d.letter; }))
-					.copy();
-
-			var transition = svg.transition().duration(750),
-					delay = function(d, i) { return i * 50; };
-
-			transition.selectAll(".bar")
-					.delay(delay)
-					.attr("x", function(d) { return x0(d.letter); });
-
-			transition.select(".x.axis")
-					.call(xAxis)
-				.selectAll("g")
-					.delay(delay);
-		}
-	});
 }
 
 function locationPlot(filename, div, width, height) {
