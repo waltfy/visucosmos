@@ -31,8 +31,8 @@ function wordCloud(filename, div, width, height) {
 	var header = "";
 	var content = "";
 
-	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
-		// $.getJSON("http://visucosmos.info/"+file, function(data) {
+	// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		$.getJSON("http://visucosmos.info/"+file, function(data) {
 		$.each(data, function(key, val) {
 			$.each(val, function(key, val) {
 				// console.log(val);
@@ -130,8 +130,8 @@ function pieChart(filename, div, width, height) {
 	width = $('#'+div).parent().width();
 	height = width;
 
-	d3.json("http://localhost/visucosmos-git/public_html/"+file,
-		// d3.json("http://visucosmos.info/"+file,
+	// d3.json("http://localhost/visucosmos-git/public_html/"+file,
+		d3.json("http://visucosmos.info/"+file,
 		function (jsondata) {
 
 		console.log(jsondata[0]);
@@ -229,8 +229,8 @@ function barChart(filename, div, width, height) {
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	d3.json("http://localhost/visucosmos-git/public_html/"+file, function(error, data) {
-	// d3.json("http://visucosmos.info/"+file, function(error, data) {	
+	// d3.json("http://localhost/visucosmos-git/public_html/"+file, function(error, data) {
+	d3.json("http://visucosmos.info/"+file, function(error, data) {	
 		var attr; 
 
 		var headers = []; 
@@ -316,8 +316,8 @@ function locationPlot(filename, div, width, height) {
 	$('#'+div).css('padding-bottom', stringWidth);
 	// document.getElementById(div).style.height = stringHeight;
 
-	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
-		// $.getJSON("http://visucosmos.info/"+file, function(data) {
+	// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		$.getJSON("http://visucosmos.info/"+file, function(data) {
 		$.each(data, function(key, val) {
 			$.each(val, function(key, val) {
 				showAddress(val);
@@ -395,8 +395,8 @@ function bubbleChart(filename, div, width, height) {
 	var header = "";
 	var content = "";
 
-	$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
-		//$.getJSON("http://visucosmos.info/"+file, function(data) {
+	// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		$.getJSON("http://visucosmos.info/"+file, function(data) {
 		$.each(data, function(key, val) {
 			$.each(val, function(key, val) {
 				// console.log(val);
@@ -569,8 +569,8 @@ function heatMap(filename, div, width, height) {
 			max: 46,
 			data: []};
 
-		$.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
-		// $.getJSON("http://visucosmos.info/"+file, function(data) {
+		// $.getJSON("http://localhost/visucosmos-git/public_html/"+file, function(data) {
+		$.getJSON("http://visucosmos.info/"+file, function(data) {
 			$.each(data, function(key, val) {
 				// $.each(val, function(key, val) {
 				if(val['Latitude'] != "-"){
