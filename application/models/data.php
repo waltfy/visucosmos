@@ -71,11 +71,6 @@
 					array_push($available_graphs, '1');
 				}
 
-				// Bar Chart, 1 Dimension - Float || Int
-				if (in_array($types[0], $barChart)) {
-					array_push($available_graphs, '2');
-				}
-
 				// WordCloud, 1 Dimension - String
 				if (in_array($types[0], $wordCloud)) {
 					array_push($available_graphs, '3');

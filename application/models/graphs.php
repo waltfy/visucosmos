@@ -10,7 +10,7 @@
 
 		public static function getFunctionName($graph_id) {
 			$graph = Graphs::find($graph_id);
-			print_r($graph->function);
+			//print_r($graph->function);
 		}
 		
 	}
