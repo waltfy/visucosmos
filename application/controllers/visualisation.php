@@ -68,27 +68,21 @@
 		}
 
 		function action_downloadcsv($id) {
-			$json_str = Visualisation::get_json($id);
-
-			$array = json_decode($json_str);
-			$newarray = array();
-			$firstvalue = ""; 
-
-			$newarray = array(); 
-			foreach ($array as $key => $jsons) { // This will search in the 2 jsons
-     			foreach($jsons as $key => $value) {
-         			echo $key; 
-         			echo " , ";
-         			echo $value;
-         			echo "<br/>";
-    			}
+			$json = json_decode(Visualisation::get_json($id));
+			$headers = implode(', ', array_keys(get_object_vars($json[0])));
+			print_r($headers);
+			echo "\n";
+			foreach ($json as $rows) {
+				$line = array();
+				foreach ($rows as $values) {
+					array_push($line, $values);
+				}
+				echo implode(', ', $line);
+				echo "\n";
 			}
-
- 			header("Content-type: text/csv");  
-			header("Cache-Control: no-store, no-cache");  
-			header('Content-Disposition: attachment; filename="filename.csv"'); 
-			 
-
+			header("Content-type: text/csv");
+			header("Cache-Control: no-store, no-cache");
+			header('Content-Disposition: attachment; filename="visualisation_'.$id.'.csv"');
 		}
 
 		function action_save($vis_id, $graph_id) {

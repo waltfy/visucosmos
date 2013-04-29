@@ -19,12 +19,7 @@
 	<?php endif; ?>
 	<h2>
 		<?php echo  $details->name ; ?><small> @ <?php echo  $dataset->name ; ?></small>
-		<?php if($details->json_path != null): ?>
-			<small><?php echo  HTML::link('visualisation/download/'.$details->id, " Download JSON", array('class' => 'icon-download')) ; ?></small>
-		<?php endif; ?>
-		<?php if($details->json_path != null): ?>
-			<small><?php echo  HTML::link('visualisation/downloadcsv/'.$details->id, " Generate CSV", array('class' => 'icon-download')) ; ?></a></small>
-		<?php endif; ?>
+		
 		<?php echo  HTML::link('visualisation/delete/'.$details->id, 'Delete', array('class' => 'btn btn-danger')) ; ?>
 	</h2>
 	<small>Edit details such as attributes and columns.</small>

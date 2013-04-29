@@ -13,7 +13,13 @@
 			</ul>
 		</div>
 	@endif
-	<h2>{{ $details->name }}  {{ HTML::link('visualisation/edit/'.$details->id, 'Edit', array('class' => 'btn btn-warning')) }}</h2>
+	<h2>{{ $details->name }}  {{ HTML::link('visualisation/edit/'.$details->id, 'Edit', array('class' => 'btn btn-warning')) }}
+		@if ($details->json_path != null)
+			<small>{{ HTML::link('visualisation/download/'.$details->id, " JSON", array('class' => 'icon-download')) }}</small>
+			<small>{{ HTML::link('visualisation/downloadcsv/'.$details->id, " CSV", array('class' => 'icon-download')) }}</a></small>
+			<small>{{ HTML::link('#', " IMAGE", array('class' => 'icon-download', 'onclick' => 'generate_svg();')) }}</a></small>
+		@endif
+	</h2>
 	<small>Below you can view the graph you have selected.</small>
 	@if ($details->selected_graph != null)
 		<div class='col span12' id='graph_place'>
@@ -26,8 +32,5 @@
 	@endif
 <script type="text/javascript">
 <? echo Graphs::getFunctionName(unserialize($details->selected_graph))."('$details->json_path', 'graph_place', 700, 500);"; ?>
-	$(window).load(function() {
-		getCanvas();
-	});
 </script>
 @endsection

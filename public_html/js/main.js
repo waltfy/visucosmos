@@ -127,6 +127,9 @@ function pieChart(filename, div, width, height) {
 	var file = filename;
 	var renderAt = makeId(div);
 
+	width = $('#'+div).parent().width();
+	height = width;
+
 	d3.json("http://localhost/visucosmos-git/public_html/"+file,
 		// d3.json("http://visucosmos.info/"+file,
 		function (jsondata) {
@@ -608,6 +611,17 @@ function show_svg_code() {
 
 	//Optional: Use Google-Code-Prettifier to add colors.
 	prettyPrint();
-
 	return svg_xml;
+}
+
+function generate_svg() {
+	var html = d3.select("svg")
+        .attr("title", "test2")
+        .attr("version", 1.1)
+        .attr("xmlns", "http://www.w3.org/2000/svg")
+        .node().parentNode.innerHTML;
+	d3.select("body").append("small")
+        .attr("id", "download")
+        .append("img")
+        .attr("src", "data:image/svg+xml;base64,"+ btoa(html));
 }

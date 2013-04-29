@@ -12,7 +12,13 @@
 			</ul>
 		</div>
 	<?php endif; ?>
-	<h2><?php echo  $details->name ; ?>  <?php echo  HTML::link('visualisation/edit/'.$details->id, 'Edit', array('class' => 'btn btn-warning')) ; ?></h2>
+	<h2><?php echo  $details->name ; ?>  <?php echo  HTML::link('visualisation/edit/'.$details->id, 'Edit', array('class' => 'btn btn-warning')) ; ?>
+		<?php if($details->json_path != null): ?>
+			<small><?php echo  HTML::link('visualisation/download/'.$details->id, " JSON", array('class' => 'icon-download')) ; ?></small>
+			<small><?php echo  HTML::link('visualisation/downloadcsv/'.$details->id, " CSV", array('class' => 'icon-download')) ; ?></a></small>
+			<small><?php echo  HTML::link('#', " IMAGE", array('class' => 'icon-download', 'onclick' => 'generate_svg();')) ; ?></a></small>
+		<?php endif; ?>
+	</h2>
 	<small>Below you can view the graph you have selected.</small>
 	<?php if($details->selected_graph != null): ?>
 		<div class='col span12' id='graph_place'>
@@ -25,9 +31,6 @@
 	<?php endif; ?>
 <script type="text/javascript">
 <? echo Graphs::getFunctionName(unserialize($details->selected_graph))."('$details->json_path', 'graph_place', 700, 500);"; ?>
-	$(window).load(function() {
-		getCanvas();
-	});
 </script>
 <?php \Laravel\Section::stop(); ?>
 <?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

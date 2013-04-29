@@ -20,12 +20,7 @@
 	@endif
 	<h2>
 		{{ $details->name }}<small> @ {{ $dataset->name }}</small>
-		@if ($details->json_path != null)
-			<small>{{ HTML::link('visualisation/download/'.$details->id, " Download JSON", array('class' => 'icon-download')) }}</small>
-		@endif
-		@if ($details->json_path != null)
-			<small>{{ HTML::link('visualisation/downloadcsv/'.$details->id, " Generate CSV", array('class' => 'icon-download')) }}</a></small>
-		@endif
+		
 		{{ HTML::link('visualisation/delete/'.$details->id, 'Delete', array('class' => 'btn btn-danger')) }}
 	</h2>
 	<small>Edit details such as attributes and columns.</small>
