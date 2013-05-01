@@ -1,0 +1,39 @@
+<? $pagetitle = 'Settings'; ?>
+
+<?php \Laravel\Section::start('content'); ?>
+	<h2>New Data Set</h2>
+	<h3>Title</h3>
+	<small><?php echo $Input['name']; ?></small>
+	<h3>Description</h3>
+	<small><?php echo $Input['description']; ?></small>
+	
+	<h3>File Contents</h3>
+	<small><i>Please select rows to be marked as a 'Header'.</i></small>
+	<br>
+	
+	<?php echo Form::open('settings/mark_data', 'POST', array('class' => 'form-horizontal')); ?>
+	<small>
+	<table class ="table table-hover">
+	<?php foreach($Datas as $Data): ?>
+	<tr>
+	  <td><?php echo Form::checkbox('rows[]',$Data->id); ?> </td>
+	  <?php
+		for($l = 1; $l <= 14; $l++){
+			$attr = "attr".$l;
+			echo'<td>'.$Data->$attr.'</td>'; 
+		}
+		?>
+
+	</tr>
+	<?php echo  Form::hidden('DS_id', $Data->data_set_id ) ; ?>
+	<?php endforeach; ?>
+	</table>
+	</small>
+	</br>
+	<?php echo  Form::button('Update', array('class' => 'btn btn-success' )) ; ?>
+	<?php echo Form::close(); ?>
+	  
+	
+	<br>
+<?php \Laravel\Section::stop(); ?>
+<?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

@@ -31,6 +31,10 @@
 		</div>
 	@endif
 <script type="text/javascript">
-<? echo Graphs::getFunctionName(unserialize($details->selected_graph))."('$details->json_path', 'graph_place', 700, 500);"; ?>
+<? 
+	if (Graphs::getFunctionName(unserialize($details->selected_graph)) != null) {
+		echo Graphs::getFunctionName(unserialize($details->selected_graph))."('$details->json_path', 'graph_place', 700, 500);";
+	};
+?>
 </script>
 @endsection

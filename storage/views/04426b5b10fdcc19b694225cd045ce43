@@ -1,0 +1,41 @@
+<? $pagetitle = 'Settings'; ?>
+
+<?php \Laravel\Section::start('content'); ?>
+	<h2></h2>
+	<?php echo Form::open('settings/detect_type', 'POST', array('class' => 'form-horizontal')); ?>
+	<small>
+	
+	<table class ="table" >
+	<?php foreach($Headers as $Data): ?>
+	<thead>
+	<tr>
+	  <?php
+		for($l = 1; $l <= 14; $l++){
+			$attr = "attr".$l;
+			echo'<th>'.$Data->$attr.'</th>'; 
+		}
+		?>
+	</tr>
+	</thead>
+	<?php endforeach; ?>
+	
+	
+	<?php foreach($Rows as $Data): ?>
+	<tr>
+		<?php
+		for($l = 1; $l <= 14; $l++){
+			$attr = "attr".$l;
+			echo'<td>'.$Data->$attr.'</td>'; 
+		}
+		?>
+	</tr>
+	<?php echo  Form::hidden('DS_id', $Data->data_set_id ) ; ?>
+	<?php endforeach; ?>
+	</table>
+	</small>
+	</br>
+	<?php echo  Form::button('Update', array('class' => 'btn btn-success' )) ; ?>
+	<?php echo Form::close(); ?>
+
+<?php \Laravel\Section::stop(); ?>
+<?php echo view('layouts.member')->with(get_defined_vars())->render(); ?>

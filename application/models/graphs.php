@@ -10,9 +10,13 @@
 
 		public static function getFunctionName($graph_id) {
 			$graph = Graphs::find($graph_id);
-			return $graph->function;
+			
+			if (isset($graph->function)) {
+				return $graph->function;	
+			} else {
+				return null;
+			}
 		}
-		
 	}
 
 ?>

@@ -34,19 +34,29 @@
 			return Redirect::to('admin/retrieve')->with('success', true);
 		}
 		
-		function action_storedata(){
+		function action_storedata() {
 	    
 	    //Action
-	    $Input = Input::all();
+	    $input = Input::all();
+
+			$rules = array(
+			    'name' => 'required|unique:data_sets',
+			    'description' => 'required',
+			    'csv' => 'required'
+			);
+
+			$validation = Validator::make($input, $rules);
+
+			if ($validation->fails()) {
+    		return Redirect::to('admin/upload')->with_errors($validation);
+			}
+
 	    $DS_id = Data::saveToDatabase($Input);
 	    
 	    //Data for views
 	    $Data = Data::where('data_set_id', '=', $DS_id)->get();
 	    
-	    
-		  return View::make('settings.dataSet')
-		    ->with('Datas',$Data)
-		    ->with('Input', $Input);
+		  return View::make('settings.dataset')->with('Datas',$Data)->with('Input', $Input);
 		}
 		
 		function action_markdata(){
@@ -60,7 +70,7 @@
 			$Rows = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','L')->get();
 			$Headers = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','H')->get();
 
-			return View::make('settings.dataLabel')
+			return View::make('settings.datalabel')
 			->with('Rows', $Rows)
 			->with('Headers',$Headers);
 
@@ -77,7 +87,7 @@
 		$Headers = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','H')->get();
 		$Types = Data::where('data_set_id', '=', $Input['DS_id'])->where('line_type','=','T')->get();
 			
-			return View::make('settings.dataType')
+			return View::make('settings.datatype')
 			->with('Rows', $Rows)
 			->with('Headers',$Headers)
 			->with('Types',$Types);

@@ -206,12 +206,12 @@ Route::post('settings/changepass', function() {
 		$user->password = $password_hashed;
 		$user->save();
 
-		$to = $user->email;
-		$subject = "VisuCosmos - Your password has been changed!";
-		$message = "Hey, your new password is: '$password', please destroy this message. Let us know if this wasn't you.";
-		$from = "VisuCosmos";
-		$headers = "From:" . $from;
-		mail($to,$subject,$message,$headers);
+		$mail = new SMTP();
+		$mail->to($user->email);
+		$mail->from('admin@visucosmos.info', 'VisuCosmos');
+		$mail->subject('VisuCosmos - Your password has been changed!');
+		$mail->body("Hey, your new password is: '$password', please destroy this message. Let us know if this wasn't you.");
+		$result = $mail->send();
 
 		return Redirect::to('settings/password')->with('success', true);
 	}
@@ -266,12 +266,12 @@ Route::post('admin/register', function() {
 		$user->username = $std_no;
 		$user->save();
 
-		$to = $email;
-		$subject = "Your VisuCosmos Account!";
-		$message = "Hello! Welcome to VisuCosmos, your password is: '$password', please change this asap. Simply login with your email @ http://visucosmos.info";
-		$from = "VisuCosmos";
-		$headers = "From:" . $from;
-		mail($to,$subject,$message,$headers);
+		$mail = new SMTP();
+		$mail->to($email);
+		$mail->from('admin@visucosmos.info', 'VisuCosmos');
+		$mail->subject('Your VisuCosmos Account!');
+		$mail->body("Hello! Welcome to VisuCosmos, your password is: '$password', please change this asap. Simply login with your email @ http://visucosmos.info");
+		$result = $mail->send();
 
 		return Redirect::to('admin/newuser')->with('success', true);
 	}
@@ -279,17 +279,14 @@ Route::post('admin/register', function() {
 });
 
 Route::post('settings/add_data', 'admin@storedata');
-
 Route::post('settings/mark_data', 'admin@markdata');
-
 Route::post('settings/detect_type', 'admin@detecttype');
 
-Route::post('settings/data_finish', function()
-{
+Route::post('settings/data_finish', function() {
 	return View::make('settings.admin');
 });
 
-Route::post('visualisation/new', function(){
+Route::post('visualisation/new', function() {
 
 	$input = Input::all();
 
