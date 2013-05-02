@@ -51,12 +51,12 @@
     		return Redirect::to('admin/upload')->with_errors($validation);
 			}
 
-	    $DS_id = Data::saveToDatabase($Input);
+	    $DS_id = Data::saveToDatabase($input);
 	    
 	    //Data for views
 	    $Data = Data::where('data_set_id', '=', $DS_id)->get();
 	    
-		  return View::make('settings.dataset')->with('Datas',$Data)->with('Input', $Input);
+		  return View::make('settings.dataset')->with('Datas',$Data)->with('Input', $input);
 		}
 		
 		function action_markdata(){

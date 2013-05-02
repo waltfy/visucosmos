@@ -343,7 +343,7 @@ Route::post('settings/getback', function() {
 
 		$user = User::where('username', '=', Input::get('username'))->first();
 
-		$retrieved = User::find($user->id)->visualisation()->where('is_active', '=', 'N')->get();
+		$retrieved = DB::query("SELECT * FROM visualisation WHERE user_id = '$user->id' AND is_active = 'N'");
 
 		if ($retrieved == null) {
 			return Redirect::to('admin/retrieve')->with('no_vis', true);			

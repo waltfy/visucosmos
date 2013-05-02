@@ -35,7 +35,7 @@
 	{{ Form::close() }}
 	<br>
 	@if (Session::has('retrieved'))
-		<?php $retrieved =  Session::get('retrieved'); ?>
+		<?php $retrieved = Session::get('retrieved'); ?>
 		<table class="table table-hover">
 			<thead>
 			<tr>

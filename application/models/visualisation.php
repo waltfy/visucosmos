@@ -7,6 +7,10 @@
       return $this->belongs_to('User');
     }
 
+    public function sets() {
+        return $this->has_one('Set');
+    }
+
     public static function get_json($id) {
     	return Response::download('public_html/json/'.$id.'.json');
     }
